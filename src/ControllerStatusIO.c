@@ -119,8 +119,15 @@ BOOL Ros_Controller_Initialize()
         MP_RB_CALIB_DATA calibData;
         if (Ros_mpGetRobotCalibrationData(i, &calibData) == OK)
         {
+#if defined(YRC1000) || defined(YRC1000u) || defined(DX200)
             if (calibData.s_rb.grp_no <= MP_R8_GID && //the slave is a robot
                 calibData.m_rb.grp_no <= MP_R8_GID) //the master is another robot's RF
+#elif defined (FS100)
+            if (calibData.s_rb.grp_no <= MP_R4_GID && //the slave is a robot
+                calibData.m_rb.grp_no <= MP_R4_GID) //the master is another robot's RF
+#else
+#error "Ros_Controller_Initialize: unsupported platform"
+#endif
             {
                 groupIndex = mpCtrlGrpId2GrpNo((MP_GRP_ID_TYPE)calibData.s_rb.grp_no);
                 MP_COORD* coord = &g_Ros_Controller.ctrlGroups[groupIndex]->robotCalibrationToBaseFrame;
