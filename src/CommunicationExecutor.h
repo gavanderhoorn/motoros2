@@ -13,15 +13,15 @@
 #define PERIOD_COMMUNICATION_USERLAN_LINK_CHECK_MS          500
 
 // total number of handles =
-//      timers +                                            2
-//      action_server +                                     1
+//      timers +                                            1
+//      action_server +                                     0
 //      service reset                                       1
-//      service start_traj_mode                             1
+//      service start_traj_mode                             0
 //      service start_point_queue_mode                      1
 //      service stop_traj_mode                              1
 //      service queue_traj_point                            1
-//      service select_tool                                 1
-#define QUANTITY_OF_HANDLES_FOR_MOTION_EXECUTOR             (9)
+//      service select_tool                                 0
+#define QUANTITY_OF_HANDLES_FOR_MOTION_EXECUTOR             (5)
 
 // total number of handles =
 //      timers +                                            1

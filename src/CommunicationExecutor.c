@@ -221,12 +221,13 @@ void Ros_Communication_PingAgentConnection(rcl_timer_t* timer, int64_t last_call
     if (g_Ros_Communication_AgentIsConnected && g_nodeConfigSettings.sync_timeclock_with_agent)
         rmw_uros_sync_session(100);
 }
-
+#if 0
 void Ros_Communication_PublishActionFeedback(rcl_timer_t* timer, int64_t last_call_time)
 {
     Ros_ActionServer_FJT_ProcessFeedback();
     Ros_ActionServer_FJT_ProcessResult();
 }
+#endif
 
 static void Ros_Communication_MonitorUserLanState(rcl_timer_t* timer, int64_t last_call_time)
 {
@@ -312,10 +313,10 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
     //Create timers
     rc = rclc_timer_init_default(&timerPingAgent, &g_microRosNodeInfo.support, RCL_MS_TO_NS(PERIOD_COMMUNICATION_PING_AGENT_MS), Ros_Communication_PingAgentConnection);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_TIMER_INIT_PING, "Failed creating rclc timer (%d)", (int)rc);
-
+#if 0
     rc = rclc_timer_init_default(&timerPublishActionFeedback, &g_microRosNodeInfo.support, RCL_MS_TO_NS(g_nodeConfigSettings.action_feedback_publisher_period), Ros_Communication_PublishActionFeedback);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_TIMER_INIT_ACTION_FB, "Failed creating rclc timer (%d)", (int)rc);
-
+#endif
     rc = rclc_timer_init_default(&timerMonitorUserLanState, &g_microRosNodeInfo.support,
         RCL_MS_TO_NS(PERIOD_COMMUNICATION_USERLAN_LINK_CHECK_MS),
         Ros_Communication_MonitorUserLanState);
@@ -343,7 +344,7 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
     //
     rc = rclc_executor_add_timer(&executor_motion_control, &timerPingAgent);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_TIMER_ADD_PING, "Failed adding timer (%d)", (int)rc);
-
+#if 0
     rc = rclc_executor_add_timer(&executor_motion_control, &timerPublishActionFeedback);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_TIMER_ADD_ACTION_FB, "Failed adding timer (%d)", (int)rc);
 
@@ -362,7 +363,7 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
         Ros_ActionServer_FJT_Goal_Cancel,
         &g_actionServerFollowJointTrajectory);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_ADD_FJT_SERVER, "Failed adding FJT server (%d)", (int)rc);
-
+#endif
     rc = rclc_executor_add_service(
         &executor_motion_control, &g_serviceStopTrajMode, &g_messages_StopTrajMode.request,
         &g_messages_StopTrajMode.response, Ros_ServiceStopTrajMode_Trigger);
@@ -372,12 +373,12 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
         &executor_motion_control, &g_serviceResetError, &g_messages_ResetError.request,
         &g_messages_ResetError.response, Ros_ServiceResetError_Trigger);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_ADD_SERVICE_RESET_ERROR, "Failed adding service (%d)", (int)rc);
-
+#if 0
     rc = rclc_executor_add_service(
         &executor_motion_control, &g_serviceStartTrajMode, &g_messages_StartTrajMode.request,
         &g_messages_StartTrajMode.response, Ros_ServiceStartTrajMode_Trigger);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_ADD_SERVICE_START_TRAJ_MODE, "Failed adding service (%d)", (int)rc);
-
+#endif
     rc = rclc_executor_add_service(
         &executor_motion_control, &g_serviceStartPointQueueMode, &g_messages_StartPointQueueMode.request,
         &g_messages_StartPointQueueMode.response, Ros_ServiceStartPointQueueMode_Trigger);
@@ -387,12 +388,12 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
         &executor_motion_control, &g_serviceQueueTrajPoint, g_messages_QueueTrajPoint.request,
         g_messages_QueueTrajPoint.response, Ros_ServiceQueueTrajPoint_Trigger);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_ADD_SERVICE_QUEUE_POINT, "Failed adding service (%d)", (int)rc);
-
+#if 0
     rc = rclc_executor_add_service(
         &executor_motion_control, &g_serviceSelectMotionTool, &g_messages_SelectMotionTool.request,
         &g_messages_SelectMotionTool.response, Ros_ServiceSelectMotionTool_Trigger);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_ADD_SERVICE_SELECT_MOTION_TOOL, "Failed adding service (%d)", (int)rc);
-
+#endif
     //==========================================================
     //Add entities to I/O executor
     //
@@ -465,8 +466,9 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
 
         // timeout specified in nanoseconds
         rclc_executor_spin_some(&executor_motion_control, RCL_MS_TO_NS(1));
-
+#if 0
         Ros_MotionControl_ValidateMotionModeIsOk();
+#endif
     }
     
     //wait for Ros_Communication_RunIoExecutor task to finish before cleaning shared resources
@@ -509,10 +511,12 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
     if (rc != RCL_RET_OK)
         Ros_Debug_BroadcastMsg("Failed cleaning up UserLan link state monitor timer: %d", rc);
 
+#if 0
     Ros_Debug_BroadcastMsg("Cleanup timer for action feedback");
     rc = rcl_timer_fini(&timerPublishActionFeedback);
     if (rc != RCL_RET_OK)
         Ros_Debug_BroadcastMsg("Failed cleaning up action feedback timer: %d", rc);
+#endif
 
     Ros_Debug_BroadcastMsg("Cleanup timer for ping");
     rc = rcl_timer_fini(&timerPingAgent);

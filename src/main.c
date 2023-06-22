@@ -123,16 +123,20 @@ void RosInitTask()
         Ros_InformChecker_ValidateJob();
 
         Ros_PositionMonitor_Initialize();
+#if 0
         Ros_ActionServer_FJT_Initialize(); //initialize action server - FollowJointTrajectory
-
+#endif
         Ros_ServiceQueueTrajPoint_Initialize();
         Ros_ServiceReadWriteIO_Initialize();
         Ros_ServiceResetError_Initialize();
+#if 0
         Ros_ServiceStartTrajMode_Initialize();
+#endif
         Ros_ServiceStartPointQueueMode_Initialize();
         Ros_ServiceStopTrajMode_Initialize();
+#if 0
         Ros_ServiceSelectMotionTool_Initialize();
-
+#endif
         // Start executor that performs all communication
         // (This task deletes itself when the agent disconnects.)
         SEM_ID semCommunicationExecutorStatus = mpSemBCreate(SEM_Q_FIFO, SEM_FULL);
@@ -204,15 +208,21 @@ void RosInitTask()
         mpSemTake(semCommunicationExecutorStatus, WAIT_FOREVER);
         mpSemDelete(semCommunicationExecutorStatus);
 
+#if 0
         Ros_ServiceSelectMotionTool_Cleanup();
+#endif
         Ros_ServiceStopTrajMode_Cleanup();
+#if 0
         Ros_ServiceStartTrajMode_Cleanup();
+#endif
         Ros_ServiceStartPointQueueMode_Cleanup();
         Ros_ServiceResetError_Cleanup();
         Ros_ServiceReadWriteIO_Cleanup();
         Ros_ServiceQueueTrajPoint_Cleanup();
 
+#if 0
         Ros_ActionServer_FJT_Cleanup();
+#endif
         Ros_PositionMonitor_Cleanup();
         Ros_Controller_Cleanup();
         Ros_Communication_Cleanup(); 
