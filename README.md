@@ -152,6 +152,8 @@ The values must match *exactly*.
 
 |**Controller** |**ROS 2 Version** | **File**          |**Version** | **MD5 hash**                       |
 |---------------|------------------|-------------------|------------|------------------------------------|
+| DX200         | Foxy             | `mr2_dx2_f.out`   | `TODO`     | `TODO`                             |
+| DX200         | Humble           | `mr2_dx2_h.out`   | `TODO`     | `TODO`                             |
 | YRC1000       | Foxy             | `mr2_yrc1_f.out`  | `v0.1.0`   | `eb3c028d0989b6cce2eb4d50a9f45001` |
 | YRC1000       | Galactic         | `mr2_yrc1_g.out`  | `v0.1.0`   | `78abcead2e2504109a49287648a9bc04` |
 | YRC1000       | Humble           | `mr2_yrc1_h.out`  | `v0.1.0`   | `c5d0f2cce281ed1cb8194badaaffc511` |
