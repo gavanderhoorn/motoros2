@@ -11,8 +11,30 @@ on:
   workflow_dispatch:
 
 jobs:
+  msbuild_filter:
+    runs-on: ubuntu-latest
+    outputs:
+      needs_msbuild: ${{ steps.paths_filter.outputs.srcs || steps.paths_filter.outputs.vsproj }}
+    steps:
+      - name: Checkout MotoROS2
+        uses: actions/checkout@v3
+      - name: Check VS proj has changed
+        id: paths_filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            srcs:
+              - 'src/**'
+            vsproj:
+              - 'MotoROS2.sln'
+      - name: Result
+        if: steps.paths_filter.outputs.srcs == 'true' || steps.paths_filter.outputs.vsproj == 'true'
+        run: echo "Needs MSBuild build"
+
   msbuild:
     runs-on: windows-2022
+    needs: msbuild_filter
+    if: needs.msbuild_filter.outputs.needs_msbuild == 'true'
 
     strategy:
       # keep jobs running even if one fails (we want to know on which
