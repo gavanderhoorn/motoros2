@@ -42,6 +42,7 @@ void Ros_ReportVersionInfoToController()
 
     sprintf(appInfoSendData.AppName, APPLICATION_NAME);
 
+    //extra comment
     sprintf(appInfoSendData.Version, "%s", APPLICATION_VERSION);
     sprintf(appInfoSendData.Comment, "micro-ROS based ROS 2 interface");
 
