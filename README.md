@@ -24,6 +24,8 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 This repository hosts the source code of the MotoROS2 project.
 Together with the [motoros2_interfaces](https://github.com/yaskawa-global/motoros2_interfaces) repository, MotoROS2 is all that's needed to allow a Yaskawa Motoman industrial robot controller to be controlled by a ROS 2 application.
 
+Bla.
+
 The following sections document how to download, install, configure, use and troubleshoot MotoROS2.
 
 ## Quickstart
