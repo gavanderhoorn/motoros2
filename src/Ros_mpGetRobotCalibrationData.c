@@ -41,9 +41,8 @@ void Ros_mpGetRobotCalibrationData_Initialize()
     ret = mpSaveFile(MP_DRV_ID_DRAM, "", FILENAME_RBCALIB_DAT);
     if (ret != OK)
     {
-        Ros_Debug_BroadcastMsg("Couldn't save " FILENAME_RBCALIB_DAT " to DRAM drive. Error (%d)", ret);
+        Ros_Debug_BroadcastMsg("Couldn't save " FILENAME_RBCALIB_DAT " to DRAM drive. Error (%d). (This is normal for a single-robot system)", ret);
         Ros_Debug_BroadcastMsg("/tf will be inaccurate for multi-group systems");
-        mpSetAlarm(ALARM_DAT_FILE_PARSE_FAIL, "Failed to parse " FILENAME_RBCALIB_DAT, SUBCODE_DAT_FAIL_CMOS_TO_DRAM);
         return;
     }
 

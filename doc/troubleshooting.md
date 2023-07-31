@@ -921,20 +921,6 @@ Please obtain the standard job from the Github repository and load it using the 
 ```text
 ALARM 8015
  Failed to parse RBCALIB.DAT
-[0]
-```
-
-*Solution:*
-Please contact Yaskawa technical support for assistance.
-Include a copy of the `ALL.PRM` and `CMOS.BIN` from your robot controller.
-
-### Alarm: 8015[1]
-
-*Example:*
-
-```text
-ALARM 8015
- Failed to parse RBCALIB.DAT
 [1]
 ```
 

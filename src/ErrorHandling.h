@@ -205,7 +205,6 @@ typedef enum
 
 typedef enum
 {
-    SUBCODE_DAT_FAIL_CMOS_TO_DRAM,
     SUBCODE_DAT_FAIL_OPEN,
 } DAT_SUBCODE;
 
