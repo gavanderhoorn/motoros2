@@ -257,6 +257,8 @@ In *Normal Operation* mode:
  touch `[RESET]` to clear the alarm
  1. upgrade to *MANAGEMENT* security level by touching `[System Info]`→`[Security]` (default password is all `9`'s)
  1. touch `[PARAMETER]`→`[S2C]` and set the following parameters:
+     1. `S2C541 = 0`
+     1. `S2C542 = 0`
      1. `S2C1102 = 2`
      1. `S2C1104 = 2`
      1. `S2C1250 = 1`
