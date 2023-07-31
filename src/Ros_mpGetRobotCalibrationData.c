@@ -41,7 +41,7 @@ void Ros_mpGetRobotCalibrationData_Initialize()
     ret = mpSaveFile(MP_DRV_ID_DRAM, "", FILENAME_RBCALIB_DAT);
     if (ret != OK)
     {
-        Ros_Debug_BroadcastMsg("Couldn't save " FILENAME_RBCALIB_DAT " to DRAM drive. Error (%d). (This is normal for a single-robot system)", ret);
+        Ros_Debug_BroadcastMsg("Couldn't save " FILENAME_RBCALIB_DAT " to DRAM drive. Error (%d). (This is normal if the calibration doesn't exist)", ret);
         Ros_Debug_BroadcastMsg("/tf will be inaccurate for multi-group systems");
         return;
     }
