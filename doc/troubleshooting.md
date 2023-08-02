@@ -925,7 +925,7 @@ ALARM 8015
 ```
 
 *Solution:*
-Check the following robot parameters on the teach pendant:
+Check the following robot parameters on the teach pendant and make sure they are set to the values shown here:
 
 - S2C1103 = 2
 - S2C1117 = 1
