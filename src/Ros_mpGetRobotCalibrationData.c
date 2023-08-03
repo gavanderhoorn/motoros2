@@ -70,7 +70,7 @@ void Ros_mpGetRobotCalibrationData_Initialize()
                 break;
             }
 
-            int fileNo = atoi(splitSpace.data[1]) - 1; //fileNo is zero-based, RBCALIB is one-based
+            int fileNo = strtol(splitSpace.data[1], NULL, 10) - 1; //fileNo is zero-based, RBCALIB is one-based
             Ros_CalibrationFiles[fileNo] = (MP_RB_CALIB_DATA*)mpMalloc(sizeof(MP_RB_CALIB_DATA));
 
             ret = rcutils_string_array_fini(&splitSpace); RCUTILS_UNUSED(ret);
@@ -97,7 +97,7 @@ void Ros_mpGetRobotCalibrationData_Initialize()
 
             for (int groupIndex = 0; groupIndex < 32; groupIndex += 1)
             {
-                if (atoi(splitComma.data[groupIndex]) == 1)
+                if (strtol(splitComma.data[groupIndex], NULL, 10) == 1)
                 {
                     Ros_CalibrationFiles[fileNo]->m_rb.grp_no = groupIndex;
                     break;
@@ -132,7 +132,7 @@ void Ros_mpGetRobotCalibrationData_Initialize()
 
             for (int groupIndex = 0; groupIndex < 32; groupIndex += 1)
             {
-                if (atoi(splitComma.data[groupIndex]) == 1)
+                if (strtol(splitComma.data[groupIndex], NULL, 10) == 1)
                 {
                     Ros_CalibrationFiles[fileNo]->s_rb.grp_no = groupIndex;
                     break;
@@ -164,13 +164,13 @@ void Ros_mpGetRobotCalibrationData_Initialize()
                 break;
             }
 
-            Ros_CalibrationFiles[fileNo]->pos_uow[0] = (int)(atof(splitComma.data[0]) * 1000);
-            Ros_CalibrationFiles[fileNo]->pos_uow[1] = (int)(atof(splitComma.data[1]) * 1000);
-            Ros_CalibrationFiles[fileNo]->pos_uow[2] = (int)(atof(splitComma.data[2]) * 1000);
+            Ros_CalibrationFiles[fileNo]->pos_uow[0] = (int)(strtod(splitComma.data[0], NULL) * 1000);
+            Ros_CalibrationFiles[fileNo]->pos_uow[1] = (int)(strtod(splitComma.data[1], NULL) * 1000);
+            Ros_CalibrationFiles[fileNo]->pos_uow[2] = (int)(strtod(splitComma.data[2], NULL) * 1000);
 
-            Ros_CalibrationFiles[fileNo]->ang_uow[0] = (int)(atof(splitComma.data[3]) * 10000);
-            Ros_CalibrationFiles[fileNo]->ang_uow[1] = (int)(atof(splitComma.data[4]) * 10000);
-            Ros_CalibrationFiles[fileNo]->ang_uow[2] = (int)(atof(splitComma.data[5]) * 10000);
+            Ros_CalibrationFiles[fileNo]->ang_uow[0] = (int)(strtod(splitComma.data[3], NULL) * 10000);
+            Ros_CalibrationFiles[fileNo]->ang_uow[1] = (int)(strtod(splitComma.data[4], NULL) * 10000);
+            Ros_CalibrationFiles[fileNo]->ang_uow[2] = (int)(strtod(splitComma.data[5], NULL) * 10000);
 
             ret = rcutils_string_array_fini(&splitSpace); RCUTILS_UNUSED(ret);
             ret = rcutils_string_array_fini(&splitComma); RCUTILS_UNUSED(ret);
