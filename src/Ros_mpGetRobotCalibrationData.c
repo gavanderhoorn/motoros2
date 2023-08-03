@@ -62,7 +62,13 @@ void Ros_mpGetRobotCalibrationData_Initialize()
 
         if (bRet && strstr(buffer, "//RBCALIB"))
         {
-            rcutils_split(buffer, ' ', g_motoros2_Allocator, &splitSpace);
+            ret = rcutils_split(buffer, ' ', g_motoros2_Allocator, &splitSpace);
+            if (ret != RCUTILS_RET_OK)
+            {
+                Ros_Debug_BroadcastMsg("Failed to parse robot calibration data (RBCALIB) (%d)", ret);
+                mpSetAlarm(ALARM_DAT_FILE_PARSE_FAIL, "Failed to parse " FILENAME_RBCALIB_DAT, SUBCODE_DAT_FAIL_PARSE_RBCALIB);
+                break;
+            }
 
             int fileNo = atoi(splitSpace.data[1]) - 1; //fileNo is zero-based, RBCALIB is one-based
             Ros_CalibrationFiles[fileNo] = (MP_RB_CALIB_DATA*)mpMalloc(sizeof(MP_RB_CALIB_DATA));
@@ -74,8 +80,20 @@ void Ros_mpGetRobotCalibrationData_Initialize()
 
             //---------------------------------------------------------------------
             FileUtilityFunctions_ReadLine(fd, buffer, SIZEOFBUFFER); //  //MGROUP x,x,x,....
-            rcutils_split(buffer, ' ', g_motoros2_Allocator, &splitSpace);
-            rcutils_split(splitSpace.data[1], ',', g_motoros2_Allocator, &splitComma);
+            ret = rcutils_split(buffer, ' ', g_motoros2_Allocator, &splitSpace);
+            if (ret != RCUTILS_RET_OK)
+            {
+                Ros_Debug_BroadcastMsg("Failed to parse robot calibration data (MGROUP) (%d)", ret);
+                mpSetAlarm(ALARM_DAT_FILE_PARSE_FAIL, "Failed to parse " FILENAME_RBCALIB_DAT, SUBCODE_DAT_FAIL_PARSE_MGROUP);
+                break;
+            }
+            ret = rcutils_split(splitSpace.data[1], ',', g_motoros2_Allocator, &splitComma);
+            if (ret != RCUTILS_RET_OK)
+            {
+                Ros_Debug_BroadcastMsg("Failed to parse robot calibration data (MGROUP) (%d)", ret);
+                mpSetAlarm(ALARM_DAT_FILE_PARSE_FAIL, "Failed to parse " FILENAME_RBCALIB_DAT, SUBCODE_DAT_FAIL_PARSE_MGROUP);
+                break;
+            }
 
             for (int groupIndex = 0; groupIndex < 32; groupIndex += 1)
             {
@@ -97,8 +115,20 @@ void Ros_mpGetRobotCalibrationData_Initialize()
 
             //---------------------------------------------------------------------
             FileUtilityFunctions_ReadLine(fd, buffer, SIZEOFBUFFER); //  //SGROUP x,x,x,....
-            rcutils_split(buffer, ' ', g_motoros2_Allocator, &splitSpace);
-            rcutils_split(splitSpace.data[1], ',', g_motoros2_Allocator, &splitComma);
+            ret = rcutils_split(buffer, ' ', g_motoros2_Allocator, &splitSpace);
+            if (ret != RCUTILS_RET_OK)
+            {
+                Ros_Debug_BroadcastMsg("Failed to parse robot calibration data (SGROUP) (%d)", ret);
+                mpSetAlarm(ALARM_DAT_FILE_PARSE_FAIL, "Failed to parse " FILENAME_RBCALIB_DAT, SUBCODE_DAT_FAIL_PARSE_SGROUP);
+                break;
+            }
+            ret = rcutils_split(splitSpace.data[1], ',', g_motoros2_Allocator, &splitComma);
+            if (ret != RCUTILS_RET_OK)
+            {
+                Ros_Debug_BroadcastMsg("Failed to parse robot calibration data (SGROUP) (%d)", ret);
+                mpSetAlarm(ALARM_DAT_FILE_PARSE_FAIL, "Failed to parse " FILENAME_RBCALIB_DAT, SUBCODE_DAT_FAIL_PARSE_SGROUP);
+                break;
+            }
 
             for (int groupIndex = 0; groupIndex < 32; groupIndex += 1)
             {
@@ -119,8 +149,20 @@ void Ros_mpGetRobotCalibrationData_Initialize()
 
             //---------------------------------------------------------------------
             FileUtilityFunctions_ReadLine(fd, buffer, SIZEOFBUFFER); //  //SRANG x,y,z,rx,ry,rz
-            rcutils_split(buffer, ' ', g_motoros2_Allocator, &splitSpace);
-            rcutils_split(splitSpace.data[1], ',', g_motoros2_Allocator, &splitComma);
+            ret = rcutils_split(buffer, ' ', g_motoros2_Allocator, &splitSpace);
+            if (ret != RCUTILS_RET_OK)
+            {
+                Ros_Debug_BroadcastMsg("Failed to parse robot calibration data (SRANG) (%d)", ret);
+                mpSetAlarm(ALARM_DAT_FILE_PARSE_FAIL, "Failed to parse " FILENAME_RBCALIB_DAT, SUBCODE_DAT_FAIL_PARSE_SRANG);
+                break;
+            }
+            ret = rcutils_split(splitSpace.data[1], ',', g_motoros2_Allocator, &splitComma);
+            if (ret != RCUTILS_RET_OK)
+            {
+                Ros_Debug_BroadcastMsg("Failed to parse robot calibration data (SRANG) (%d)", ret);
+                mpSetAlarm(ALARM_DAT_FILE_PARSE_FAIL, "Failed to parse " FILENAME_RBCALIB_DAT, SUBCODE_DAT_FAIL_PARSE_SRANG);
+                break;
+            }
 
             Ros_CalibrationFiles[fileNo]->pos_uow[0] = (int)(atof(splitComma.data[0]) * 1000);
             Ros_CalibrationFiles[fileNo]->pos_uow[1] = (int)(atof(splitComma.data[1]) * 1000);
