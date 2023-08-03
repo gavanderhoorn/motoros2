@@ -38,7 +38,7 @@ void Ros_mpGetRobotCalibrationData_Initialize()
     mpRemove(PATH_TO_RBCALIB_DAT); //dont care if this fails
 
     //save from CMOS to DRAM
-    ret = mpSaveFile(MP_DRV_ID_DRAM, "", FILENAME_RBCALIB_DAT);
+    ret = mpSaveFile(MP_DRV_ID_DRAM, "", FILENAME_RBCALIB_DAT); //`path` argument is blank so file is on the root of the drive
     if (ret != OK)
     {
         Ros_Debug_BroadcastMsg("Couldn't save " FILENAME_RBCALIB_DAT " to DRAM drive. Error (%d). (This is normal if the calibration doesn't exist)", ret);
