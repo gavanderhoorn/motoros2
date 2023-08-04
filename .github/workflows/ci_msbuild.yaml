@@ -8,6 +8,7 @@ on:
   pull_request:
     branches:
       - main
+      - dx200_support-ci_updates
   workflow_dispatch:
 
 jobs:
@@ -41,8 +42,13 @@ jobs:
       # controllers and for which ROS 2 versions builds fail / succeed)
       fail-fast: false
       matrix:
-        controller: [yrc1000, yrc1000u]
+        controller: [dx200, yrc1000, yrc1000u]
         ros2_codename: [humble, galactic, foxy]
+        exclude:
+          - controller: dx200
+            ros2_codename: galactic
+          - controller: dx200
+            ros2_codename: foxy
 
     steps:
     - name: Uppercase controller identifier
