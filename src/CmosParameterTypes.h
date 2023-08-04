@@ -2,7 +2,7 @@
 
 // SPDX-FileCopyrightText: 2022-2023, Yaskawa America, Inc.
 // SPDX-FileCopyrightText: 2022-2023, Delft University of Technology
-//
+// 
 // SPDX-License-Identifier: BSD-3-Clause
 
 #ifndef MOTOROS2_CMOS_PARAMETER_TYPES_H
