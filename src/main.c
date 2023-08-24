@@ -55,8 +55,10 @@ void RosInitTask()
 {
     g_Ros_Controller.tidIncMoveThread = INVALID_TASK;
 
+#if 0
     //Check to see if another version of MotoROS2.out is running on this controller.
     motoRosAssert_withMsg(!Ros_IsOtherInstanceRunning(), SUBCODE_MULTIPLE_INSTANCES_DETECTED, "MotoROS2 - Multiple Instances");
+#endif
 
     // init debug broadcast
     Ros_Debug_BroadcastMsg("---");
