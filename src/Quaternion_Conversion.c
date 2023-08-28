@@ -72,7 +72,11 @@
 // =============================================================================
 
 
-#include "MotoROS.h"
+#include "Quaternion_Conversion.h"
+
+#include "MathConstants.h"
+
+#include "motoPlus.h"
 
 #ifndef max
 #define max(x, y)   (((x) < (y)) ? (y) : (x))

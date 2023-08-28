@@ -8,6 +8,10 @@
 #ifndef MOTOROS2_FAUX_COMMAND_LINE_ARGS_H
 #define MOTOROS2_FAUX_COMMAND_LINE_ARGS_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include "motoPlus.h"
+
 extern int Ros_ConstructFauxArgv(char* const remap_rules_str, char* out_array[], size_t out_array_len);
 extern void Ros_CleanupFauxArgv(char** arr, size_t arr_len);
 

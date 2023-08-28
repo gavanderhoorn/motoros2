@@ -5,7 +5,20 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#include "MotoROS.h"
+#include "ServiceStopTrajMode.h"
+
+#include "CommunicationExecutor.h"
+#include "ControllerStatusIO.h"
+#include "Debug.h"
+#include "ErrorHandling.h"
+#include "MemoryTracing.h"
+#include "MotionControl.h"
+#include "RosApiNameConstants.h"
+
+#include <rclc/service.h>
+#include <rosidl_runtime_c/string_functions.h>
+
+#include "motoPlus.h"
 
 rcl_service_t g_serviceStopTrajMode;
 

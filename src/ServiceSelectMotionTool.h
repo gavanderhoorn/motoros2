@@ -8,6 +8,11 @@
 #ifndef MOTOROS2_SERVICE_SELECT_TOOL_H
 #define MOTOROS2_SERVICE_SELECT_TOOL_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include <motoros2_interfaces/srv/select_motion_tool.h>
+#include <rcl/service.h>
+
 extern rcl_service_t g_serviceSelectMotionTool;
 
 typedef struct

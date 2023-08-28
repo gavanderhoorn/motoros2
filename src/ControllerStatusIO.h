@@ -8,6 +8,18 @@
 #ifndef MOTOROS2_CONTROLLER_STATUS_IO_H
 #define MOTOROS2_CONTROLLER_STATUS_IO_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include <industrial_msgs/msg/robot_status.h>
+#include <rcl/publisher.h>
+
+#include "CtrlGroup.h"
+#include "ErrorHandling.h"
+#include "MotoPlusExterns.h"
+
+#include "motoPlus.h"
+
+
 #define IO_FEEDBACK_WAITING_MP_INCMOVE      11120  //output# 889
 #define IO_FEEDBACK_MP_INCMOVE_DONE         11121  //output# 890
 #define IO_FEEDBACK_INITIALIZATION_DONE     11122  //output# 891

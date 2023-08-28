@@ -5,7 +5,16 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#include "MotoROS.h"
+#include "MotionControl.h"
+
+#include "ConfigFile.h"
+#include "ControllerStatusIO.h"
+#include "CommunicationExecutor.h"
+#include "Debug.h"
+#include "MathConstants.h"
+#include "RosApiNameConstants.h"
+
+#include "motoPlus.h"
 
 /// <summary>
 /// For each point in an incoming trajectory, process the data for a SINGLE JOINT.

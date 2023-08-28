@@ -5,7 +5,21 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#include "MotoROS.h"
+#include "ServiceResetError.h"
+
+#include "CommunicationExecutor.h"
+#include "ControllerStatusIO.h"
+#include "Debug.h"
+#include "ErrorHandling.h"
+#include "MemoryTracing.h"
+#include "MotoROS.h" // Ros_Sleep ?
+#include "RosApiNameConstants.h"
+
+#include <rclc/service.h>
+#include <rosidl_runtime_c/primitives_sequence_functions.h>
+#include <rosidl_runtime_c/string_functions.h>
+
+#include "motoPlus.h"
 
 #define RESET_ERROR_CHECK_TIMEOUT         5000  // ms
 #define RESET_ERROR_CHECK_PERIOD            50  // ms

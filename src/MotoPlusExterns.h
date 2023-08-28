@@ -8,6 +8,7 @@
 #ifndef MOTOROS2_MOTOPLUS_EXTERNS_H
 #define MOTOROS2_MOTOPLUS_EXTERNS_H
 
+#include "motoPlus.h"
 
 #define MP_MEM_PART_SIZE 1048576
 

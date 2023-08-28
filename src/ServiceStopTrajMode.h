@@ -8,6 +8,11 @@
 #ifndef MOTOROS2_SERVICE_STOP_TRAJ_MODE_H
 #define MOTOROS2_SERVICE_STOP_TRAJ_MODE_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include <rcl/service.h>
+#include <std_srvs/srv/trigger.h>
+
 extern rcl_service_t g_serviceStopTrajMode;
 
 typedef struct

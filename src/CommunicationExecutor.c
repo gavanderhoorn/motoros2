@@ -5,7 +5,38 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#include "MotoROS.h"
+#include "CommunicationExecutor.h"
+
+#include "ConfigFile.h"
+#include "MotoROS_PlatformLib.h"
+#include "Debug.h"
+#include "ErrorHandling.h"
+#include "MemoryAllocation.h"
+#include "MemoryTracing.h"
+#include "MotionControl.h"
+#include "FauxCommandLineArgs.h"
+#include "ActionServer_FJT.h"
+#include "ServiceQueueTrajPoint.h"
+#include "ServiceReadWriteIO.h"
+#include "ServiceResetError.h"
+#include "ServiceSelectMotionTool.h"
+#include "ServiceStartPointQueueMode.h"
+#include "ServiceStartTrajMode.h"
+#include "ServiceStopTrajMode.h"
+#include "MotoROS.h" // for Ros_Sleep ?
+
+#include <rcl/arguments.h>
+#include <rclc/timer.h>
+#include <rclc/node.h>
+#include <rclc/init.h>
+#include <rcl/init_options.h>
+#include <rmw/init_options.h>
+#include <rclc/executor.h>
+#include <rcl/types.h>
+#include <rmw_microros/rmw_microros.h>
+
+#include "motoPlus.h"
+
 
 Communication_NodeInfo g_microRosNodeInfo;
 BOOL g_Ros_Communication_AgentIsConnected;

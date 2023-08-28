@@ -8,6 +8,15 @@
 #ifndef MOTOROS2_COMMUNICATION_EXECUTOR_H
 #define MOTOROS2_COMMUNICATION_EXECUTOR_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include <rcl/init_options.h>
+#include <rcl/node.h>
+#include <rclc/types.h>
+
+#include "motoPlus.h"
+
+
 #define PERIOD_COMMUNICATION_PING_AGENT_MS                  5000
 
 #define PERIOD_COMMUNICATION_USERLAN_LINK_CHECK_MS          500

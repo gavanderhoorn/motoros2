@@ -5,7 +5,16 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+#include "MemoryAllocation.h"
+
+#include "ErrorHandling.h"
 #include "MotoROS.h"
+
+#include <rcutils/allocator.h>
+#include <rcutils/macros.h>
+#include <string.h>
+
+#include "motoPlus.h"
 
 rcl_allocator_t g_motoros2_Allocator;
 

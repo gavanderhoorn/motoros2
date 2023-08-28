@@ -8,6 +8,16 @@
 #ifndef MOTOROS2_SERVICE_READ_WRITE_IO_H
 #define MOTOROS2_SERVICE_READ_WRITE_IO_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include <motoros2_interfaces/srv/read_group_io.h>
+#include <motoros2_interfaces/srv/read_m_register.h>
+#include <motoros2_interfaces/srv/read_single_io.h>
+#include <motoros2_interfaces/srv/write_group_io.h>
+#include <motoros2_interfaces/srv/write_m_register.h>
+#include <motoros2_interfaces/srv/write_single_io.h>
+#include <rcl/service.h>
+
 extern rcl_service_t g_serviceReadSingleIO;
 extern rcl_service_t g_serviceReadGroupIO;
 extern rcl_service_t g_serviceWriteSingleIO;

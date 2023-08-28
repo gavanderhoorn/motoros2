@@ -5,7 +5,18 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+#include "InformCheckerAndGenerator.h"
+
+#include "ConfigFile.h"
+#include "Debug.h"
+#include "FileUtilityFunctions.h"
 #include "MotoROS.h"
+#include "MemoryAllocation.h"
+
+#include <rcutils/split.h>
+
+#include "motoPlus.h"
+
 
 #define MAX_JOB_LINE_LENGTH 512
 #define MAX_JOB_NAME_LENGTH_WITH_EXTENSION (MAX_JOB_NAME_LEN + 4 + 1)   //32 characters for the name, plus 4 for extension, plus terminating null

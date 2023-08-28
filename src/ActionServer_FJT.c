@@ -5,7 +5,33 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+#include "ActionServer_FJT.h"
+
+#include "CommunicationExecutor.h"
+#include "ConfigFile.h"
+#include "ControllerStatusIO.h"
+#include "Debug.h"
+#include "MemoryAllocation.h"
+#include "MemoryTracing.h"
+#include "MotionControl.h"
+#include "MotoPlusExterns.h"
 #include "MotoROS.h"
+#include "PositionMonitor.h"
+#include "RosApiNameConstants.h"
+#include "ServiceStartTrajMode.h"
+#include "TimeConversionUtils.h"
+
+#include <motoros2_interfaces/srv/start_point_queue_mode.h>
+#include <motoros2_interfaces/srv/start_traj_mode.h>
+
+#include <micro_ros_utilities/string_utilities.h>
+#include <micro_ros_utilities/type_utilities.h>
+#include <rcl/types.h>
+#include <rmw_microros/time_sync.h>
+#include <rosidl_runtime_c/string_functions.h>
+
+#include "motoPlus.h"
+
 
 //====================================================================
 //public data

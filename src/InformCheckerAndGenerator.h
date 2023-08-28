@@ -8,6 +8,8 @@
 #ifndef MOTOROS2_INFORM_CHECKER_AND_GENERATOR_H
 #define MOTOROS2_INFORM_CHECKER_AND_GENERATOR_H
 
+#include <motoplus_libmicroros_config.h>
+
 // Verify that the INFORM job is properly formatted. If not,
 // then build the job automatically
 extern void Ros_InformChecker_ValidateJob();

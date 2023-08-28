@@ -8,6 +8,15 @@
 #ifndef MOTOROS2_ACTION_SERVER_FJT_H
 #define MOTOROS2_ACTION_SERVER_FJT_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include <control_msgs/action/follow_joint_trajectory.h>
+#include <rclc/action_server.h>
+#include <rcl/types.h>
+
+#include "motoPlus.h"
+
+
 #define MAX_NUMBER_OF_POINTS_PER_TRAJECTORY 200
 #define MIN_NUMBER_OF_POINTS_PER_TRAJECTORY 2   //current position and destination
 

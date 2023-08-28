@@ -5,7 +5,13 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#include "MotoROS.h"
+#include "FileUtilityFunctions.h"
+
+#include "MotoROS_PlatformLib.h"
+
+#include <stdbool.h>
+
+#include "motoPlus.h"
 
 BOOL FileUtilityFunctions_ReadLine(int fd, char* buffer, int len)
 {

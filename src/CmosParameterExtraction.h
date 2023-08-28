@@ -10,6 +10,8 @@
 
 #include "CmosParameterTypes.h"
 
+#include "motoPlus.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

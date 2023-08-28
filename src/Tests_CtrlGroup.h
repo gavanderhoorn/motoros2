@@ -8,6 +8,8 @@
 #ifndef MOTOROS2_TESTS_CTRL_GROUP_H
 #define MOTOROS2_TESTS_CTRL_GROUP_H
 
+#include "motoPlus.h"
+
 #ifdef MOTOROS2_TESTING_ENABLE
 
 extern BOOL Ros_Testing_CtrlGroup();

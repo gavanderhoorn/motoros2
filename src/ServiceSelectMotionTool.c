@@ -5,7 +5,19 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#include "MotoROS.h"
+#include "ServiceSelectMotionTool.h"
+
+#include "CommunicationExecutor.h"
+#include "ControllerStatusIO.h"
+#include "ErrorHandling.h"
+#include "MemoryTracing.h"
+#include "RosApiNameConstants.h"
+
+#include <motoros2_interfaces/msg/selection_result_codes.h>
+#include <rclc/service.h>
+#include <rosidl_runtime_c/string_functions.h>
+
+#include "motoPlus.h"
 
 rcl_service_t g_serviceSelectMotionTool;
 

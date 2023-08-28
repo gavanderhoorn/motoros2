@@ -5,7 +5,20 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+#include "CtrlGroup.h"
+
+#include "ConfigFile.h"
+#include "ControllerStatusIO.h"
+#include "Debug.h"
 #include "MotoROS.h"
+#include "MotoROS_PlatformLib.h"
+#include "CmosParameterExtraction.h"
+#include "CmosParameterTypes.h"
+#include "MotionControl.h"
+#include "MathConstants.h"
+
+#include "motoPlus.h"
+
 
 const char* Ros_CtrlGroup_GRP_ID_String[] =
 {

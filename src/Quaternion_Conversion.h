@@ -77,6 +77,10 @@
 #ifndef MOTOROS2_QUATERNION_CONVERSION_H
 #define MOTOROS2_QUATERNION_CONVERSION_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include <geometry_msgs/msg/quaternion.h>
+
 typedef geometry_msgs__msg__Quaternion Quaternion;
 
 /**

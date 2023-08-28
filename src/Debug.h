@@ -8,6 +8,8 @@
 #ifndef MOTOROS2_DEBUG_H
 #define MOTOROS2_DEBUG_H
 
+#include <motoplus_libmicroros_config.h>
+
 extern void Ros_Debug_BroadcastMsg(char* fmt, ...);
 extern void Ros_Debug_LogToConsole(char* fmt, ...);
 

@@ -8,6 +8,8 @@
 #ifndef MOTOROS2_CMOS_PARAMETER_TYPES_H
 #define MOTOROS2_CMOS_PARAMETER_TYPES_H
 
+#include "motoPlus.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

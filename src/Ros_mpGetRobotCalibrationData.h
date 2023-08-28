@@ -8,6 +8,7 @@
 #ifndef MOTOROS2_ROS_MP_GET_ROBOT_CALIBRATION_DATA_H
 #define MOTOROS2_ROS_MP_GET_ROBOT_CALIBRATION_DATA_H
 
+#include <motoplus_libmicroros_config.h>
 
 #include "motoPlus.h"
 

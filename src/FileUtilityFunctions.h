@@ -8,6 +8,10 @@
 #ifndef MOTOROS2_FILE_UTILITY_FUNCTIONS_H
 #define MOTOROS2_FILE_UTILITY_FUNCTIONS_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include "motoPlus.h"
+
 extern BOOL FileUtilityFunctions_ReadLine(int fd, char* buffer, int len);
 extern BOOL FileUtilityFunctions_WriteLine(int fd, const char* fmt, ...);
 

@@ -7,7 +7,13 @@
 
 #ifdef MOTOROS2_TESTING_ENABLE
 
-#include "MotoROS.h"
+#include "Tests_CtrlGroup.h"
+
+#include "CtrlGroup.h"
+#include "Debug.h"
+#include "MathConstants.h"
+
+#include "motoPlus.h"
 
 BOOL Ros_Testing_CompareDouble(double a, double b)
 {

@@ -8,6 +8,13 @@
 #ifndef MOTOROS2_ERROR_HANDLING_H
 #define MOTOROS2_ERROR_HANDLING_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include <motoros2_interfaces/msg/motion_ready_enum.h>
+
+#include "motoPlus.h"
+
+
 //**********************************************************************
 //**********************************************************************
 // MOTION FAILURE ERROR CODES

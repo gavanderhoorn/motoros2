@@ -5,7 +5,23 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#include "MotoROS.h"
+#include "ServiceQueueTrajPoint.h"
+
+#include "CommunicationExecutor.h"
+#include "ControllerStatusIO.h"
+#include "Debug.h"
+#include "ErrorHandling.h"
+#include "MemoryTracing.h"
+#include "MotionControl.h"
+#include "RosApiNameConstants.h"
+
+#include <motoros2_interfaces/msg/queue_result_enum.h>
+
+#include <rclc/service.h>
+#include <rosidl_runtime_c/primitives_sequence_functions.h>
+#include <rosidl_runtime_c/string_functions.h>
+
+#include "motoPlus.h"
 
 rcl_service_t g_serviceQueueTrajPoint;
 

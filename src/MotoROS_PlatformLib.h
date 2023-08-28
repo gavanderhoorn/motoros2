@@ -8,6 +8,7 @@
 #ifndef MOTOROS_PLATFORM_LIB_H
 #define MOTOROS_PLATFORM_LIB_H
 
+#include "motoPlus.h"
 
 // Define the MotoROS_PlatformLib version number as a base-10 integer.
 //

@@ -5,7 +5,13 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#include "MotoROS.h"
+#include "ErrorHandling.h"
+
+#include "ControllerStatusIO.h"
+#include "Debug.h"
+#include "MotoROS.h" // APPLICATION_NAME
+
+#include "motoPlus.h"
 
 
 //-------------------------------------------------------------------

@@ -72,7 +72,15 @@ stream-start-event (1)
 stream-end-event (2)
 */
 
+#include "ConfigFile.h"
+
+#include "Debug.h"
 #include "MotoROS.h"
+
+#include <libyaml_vendor/yaml.h>
+
+#include "motoPlus.h"
+
 
 Ros_Configuration_Settings g_nodeConfigSettings;
 

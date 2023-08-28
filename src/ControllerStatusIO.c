@@ -5,7 +5,27 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+#include "ControllerStatusIO.h"
+
+#include "CtrlGroup.h"
+#include "CommunicationExecutor.h"
+#include "ConfigFile.h"
+#include "CmosParameterExtraction.h"
+#include "CmosParameterTypes.h"
+#include "Debug.h"
+#include "MemoryTracing.h"
 #include "MotoROS.h"
+#include "MotionControl.h"
+#include "RosApiNameConstants.h"
+#include "Ros_mpGetRobotCalibrationData.h"
+#include "TimeConversionUtils.h"
+
+#include <rosidl_runtime_c/primitives_sequence_functions.h>
+#include <rmw_microros/time_sync.h>
+#include <rclc/publisher.h>
+
+#include "motoPlus.h"
+
 
 Controller g_Ros_Controller;
 ControllerStatus_Publishers g_publishers_RobotStatus;

@@ -8,6 +8,16 @@
 #ifndef MOTOROS2_CTRL_GROUP_H
 #define MOTOROS2_CTRL_GROUP_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include "ActionServer_FJT.h"
+#include "CmosParameterTypes.h"
+
+#include <rcl/publisher.h>
+#include <sensor_msgs/msg/joint_state.h>
+
+#include "motoPlus.h"
+
 
 #define Q_SIZE 200
 

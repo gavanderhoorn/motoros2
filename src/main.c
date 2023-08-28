@@ -5,7 +5,33 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+#include <motoplus_libmicroros_config.h>
+
+#include "ConfigFile.h"
+#include "Debug.h"
+#include "ControllerStatusIO.h"
+#include "CommunicationExecutor.h"
+#include "ErrorHandling.h"
+#include "InformCheckerAndGenerator.h"
+#include "MemoryAllocation.h"
 #include "MotoROS.h"
+#include "MotoROS_PlatformLib.h"
+#include "PositionMonitor.h"
+#include "Ros_mpGetRobotCalibrationData.h"
+#include "ServiceQueueTrajPoint.h"
+#include "ServiceReadWriteIO.h"
+#include "ServiceResetError.h"
+#include "ServiceSelectMotionTool.h"
+#include "ServiceStartPointQueueMode.h"
+#include "ServiceStartTrajMode.h"
+#include "ServiceStopTrajMode.h"
+
+#ifdef MOTOROS2_TESTING_ENABLE
+#include "Tests_CtrlGroup.h"
+#endif
+
+#include "motoPlus.h"
+
 
 #if !(defined (DX200) || defined (YRC1000) || defined (YRC1000u))
 #error MotoROS2 is only supported on DX2 and YRC1 generation controllers

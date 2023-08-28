@@ -8,6 +8,10 @@
 #ifndef MOTOROS2_SERVICE_START_TRAJ_MODE_H
 #define MOTOROS2_SERVICE_START_TRAJ_MODE_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include <motoros2_interfaces/srv/start_traj_mode.h>
+#include <rcl/service.h>
 
 extern rcl_service_t g_serviceStartTrajMode;
 

@@ -8,6 +8,19 @@
 #ifndef MOTOROS2_MOTION_CONTROL_H
 #define MOTOROS2_MOTION_CONTROL_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include "CtrlGroup.h"
+#include "ErrorHandling.h" // Init_Trajectory_Status
+#include "MotoROS.h" // Ros_Sleep ?
+#include "TimeConversionUtils.h"
+
+#include <control_msgs/action/follow_joint_trajectory.h>
+#include <motoros2_interfaces/srv/queue_traj_point.h>
+
+#include "motoPlus.h"
+
+
 #define START_MAX_PULSE_DEVIATION           30
 
 #define MOTION_START_TIMEOUT                5000  // in milliseconds

@@ -8,8 +8,14 @@
 #ifndef MOTOROS2_CONFIG_FILE_H
 #define MOTOROS2_CONFIG_FILE_H
 
-//For ROS_USER_LAN1 and ROS_USER_LAN2
-#include "MotoROS_PlatformLib.h"
+#include <motoplus_libmicroros_config.h>
+
+#include "ControllerStatusIO.h"  // MAX_CONTROLLABLE_GROUPS, MAX_JOINT_NAME_LENGTH
+#include "MotoROS_PlatformLib.h" //For ROS_USER_LAN1 and ROS_USER_LAN2
+
+#include <rmw/qos_profiles.h>
+
+#include "motoPlus.h"
 
 
 #define CONFIG_FILE_NAME                "motoros2_config.yaml"

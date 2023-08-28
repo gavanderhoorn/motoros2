@@ -8,6 +8,12 @@
 #ifndef MOTOROS2_POSITION_MONITOR_H
 #define MOTOROS2_POSITION_MONITOR_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include <rcl/publisher.h>
+#include <sensor_msgs/msg/joint_state.h>
+#include <tf2_msgs/msg/tf_message.h>
+
 typedef enum
 {
     tfLink_WorldToBase = 0,

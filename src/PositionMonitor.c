@@ -5,7 +5,25 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#include "MotoROS.h"
+#include "PositionMonitor.h"
+
+#include "ConfigFile.h"
+#include "CtrlGroup.h"
+#include "CommunicationExecutor.h"
+#include "Debug.h"
+#include "MathConstants.h"
+#include "MemoryTracing.h"
+#include "Quaternion_Conversion.h"
+#include "RosApiNameConstants.h"
+#include "TimeConversionUtils.h"
+
+#include <rclc/publisher.h>
+#include <rosidl_runtime_c/primitives_sequence_functions.h>
+#include <rosidl_runtime_c/string_functions.h>
+#include <geometry_msgs/msg/transform_stamped.h>
+#include <rmw_microros/time_sync.h>
+
+#include "motoPlus.h"
 
 PositionMonitor_Publishers g_publishers_PositionMonitor;
 PositionMonitor_Messages g_messages_PositionMonitor;

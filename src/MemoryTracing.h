@@ -12,10 +12,15 @@
 #ifdef MOTOROS2_MEM_TRACE_ENABLE
 
 
+#include "Debug.h"
+#include "MotoPlusExterns.h"
+#include "motoPlus.h" // integer types
+
+
 // NOTE: cannot wrap this in a do '{} while(0)' as otherwise the variables
 //       would be declared in that scope -- and cannot be referenced later
 #define MOTOROS2_MEM_TRACE_START(name) \
-    uint64_t __mem_trace_point_start_##name = mpNumBytesFree();
+    uint64_t __mem_trace_point_start_##name = mpNumBytesFree()
 
 
 #define MOTOROS2_MEM_TRACE_MEM_FREE(name) do                     \

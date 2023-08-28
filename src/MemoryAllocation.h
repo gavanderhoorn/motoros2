@@ -8,6 +8,10 @@
 #ifndef MOTOROS2_MEMORY_ALLOCATION_H
 #define MOTOROS2_MEMORY_ALLOCATION_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include <rcl/allocator.h>
+
 //------------------------------------
 //Dynamic Memory
 //------------------------------------

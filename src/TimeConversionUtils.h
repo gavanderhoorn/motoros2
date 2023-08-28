@@ -8,8 +8,12 @@
 #ifndef MOTOROS2_TIME_CONVERSION_UTILS_H
 #define MOTOROS2_TIME_CONVERSION_UTILS_H
 
+#include <motoplus_libmicroros_config.h>
 
-#include "MotoROS.h"
+#include <builtin_interfaces/msg/duration.h>
+#include <builtin_interfaces/msg/time.h>
+
+#include "motoPlus.h"
 
 
 static inline INT64 Ros_Duration_Msg_To_Millis(builtin_interfaces__msg__Duration const* const x)

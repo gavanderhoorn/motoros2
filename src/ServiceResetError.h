@@ -8,6 +8,11 @@
 #ifndef MOTOROS2_SERVICE_RESET_ERROR_H
 #define MOTOROS2_SERVICE_RESET_ERROR_H
 
+#include <motoplus_libmicroros_config.h>
+
+#include <motoros2_interfaces/srv/reset_error.h>
+#include <rcl/service.h>
+
 extern rcl_service_t g_serviceResetError;
 
 typedef struct
