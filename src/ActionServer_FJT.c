@@ -66,8 +66,38 @@ void Ros_ActionServer_FJT_Initialize()
     //allocation config for feedback messages
     feedback_msg_alloc_cfg.allocator = &g_motoros2_Allocator;
     feedback_msg_alloc_cfg.max_string_capacity = MAX_JOINT_NAME_LENGTH;
-    feedback_msg_alloc_cfg.max_ros2_type_sequence_capacity = MAX_CONTROLLABLE_GROUPS * MP_GRP_AXES_NUM;
-    feedback_msg_alloc_cfg.max_basic_type_sequence_capacity = MAX_CONTROLLABLE_GROUPS * MP_GRP_AXES_NUM;
+    micro_ros_utilities_memory_rule_t fb_rules[] = {
+        {"feedback.joint_names", g_Ros_Controller.totalAxesCount}, // number of joints
+        {"feedback.joint_names.data", MAX_JOINT_NAME_LENGTH}, // max length of each string
+
+        {"feedback.desired.positions", g_Ros_Controller.totalAxesCount},
+        {"feedback.desired.velocities", g_Ros_Controller.totalAxesCount},
+        {"feedback.desired.accelerations", 0},  // accelerations are not publishes
+        {"feedback.desired.effort", g_Ros_Controller.totalAxesCount},
+        {"feedback.actual.positions", g_Ros_Controller.totalAxesCount},
+        {"feedback.actual.velocities", g_Ros_Controller.totalAxesCount},
+        {"feedback.actual.accelerations", 0},
+        {"feedback.actual.effort", g_Ros_Controller.totalAxesCount},
+        {"feedback.feedback.positions", g_Ros_Controller.totalAxesCount},
+        {"feedback.feedback.velocities", g_Ros_Controller.totalAxesCount},
+        {"feedback.feedback.accelerations", 0},
+        {"feedback.feedback.effort", g_Ros_Controller.totalAxesCount},
+
+        // multi-dof feedback is not used/populated at all
+        {"feedback.multi_dof_joint_names", 0},
+        {"feedback.multi_dof_joint_names.data", 0},
+        {"feedback.multi_dof_desired.transforms", 0},
+        {"feedback.multi_dof_desired.velocities", 0},
+        {"feedback.multi_dof_desired.accelerations", 0},
+        {"feedback.multi_dof_actual.transforms", 0},
+        {"feedback.multi_dof_actual.velocities", 0},
+        {"feedback.multi_dof_actual.accelerations", 0},
+        {"feedback.multi_dof_error.transforms", 0},
+        {"feedback.multi_dof_error.velocities", 0},
+        {"feedback.multi_dof_error.accelerations", 0},
+    };
+    feedback_msg_alloc_cfg.rules = fb_rules;
+    feedback_msg_alloc_cfg.n_rules = sizeof(fb_rules) / sizeof(fb_rules[0]);
     bzero(&feedback_FollowJointTrajectory, sizeof(feedback_FollowJointTrajectory));
 
     //===============================================
