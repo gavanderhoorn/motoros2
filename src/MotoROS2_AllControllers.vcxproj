@@ -161,14 +161,21 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='YRC1000_humble|Win32'">
     <NMakeBuildCommandLine>"$(MP_VS_Install)mpBuilder.exe" -c $(Configuration) -p "$(ProjectDir)\" -n "mr2_yrc1_h" -b "$(SolutionDir)bin\$(Configuration)" -o build -i "$(MP_VS_Install)YRC1000\inc"</NMakeBuildCommandLine>
     <NMakeOutput>$(MP_VS_Install)DevTools\OnlineDownload.exe</NMakeOutput>
-    <NMakePreprocessorDefinitions>$(NMakePreprocessorDefinitions);YRC1000;MOTOROS2_MEM_TRACE_ENABLE</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>$(MP_VS_Install)YRC1000\gnu\4.3.3-vxworks-6.9\lib\gcc\i586-wrs-vxworks\4.3.3\include;$(MP_VS_Install)YRC1000\inc;$(SolutionDir)libmicroros_yrc1000_humble\include;</NMakeIncludeSearchPath>
+    <NMakePreprocessorDefinitions>$(NMakePreprocessorDefinitions);YRC1000;CPU=_VX_ATOM;TOOL_FAMILY=gnu;TOOL=gnu;_WRS_KERNEL;MOTOROS2_MEM_TRACE_ENABLE</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(SolutionDir)libmicroros_yrc1000_humble\include;$(MP_VS_Install)YRC1000\inc;$(MP_VS_Install)YRC1000\gnu\4.3.3-vxworks-6.9\lib\gcc\i586-wrs-vxworks\4.3.3\include;$(MP_VS_Install)YRC1000\gnu\4.3.3-vxworks-6.9\lib\gcc\i586-wrs-vxworks\4.3.3\include-fixed</NMakeIncludeSearchPath>
     <NMakeReBuildCommandLine>"$(MP_VS_Install)mpBuilder.exe" -c $(Configuration) -p "$(ProjectDir)\" -n "mr2_yrc1_h" -b "$(SolutionDir)bin\$(Configuration)" -o build -i "$(MP_VS_Install)YRC1000\inc"</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>"$(MP_VS_Install)mpBuilder.exe" -c $(Configuration) -p "$(ProjectDir)\" -n "mr2_yrc1_h" -b "$(OutDir)\" -o clean</NMakeCleanCommandLine>
-    <NMakeForcedIncludes />
+    <NMakeForcedIncludes>$(ProjectDir)YRC1000_defines.h</NMakeForcedIncludes>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir />
-    <IncludePath>$(ProjectDir)..\libmicroros_yrc1000_humble\include;</IncludePath>
+    <IncludePath>
+    </IncludePath>
+    <AdditionalOptions>/ClangMode</AdditionalOptions>
+    <ExecutablePath />
+    <ExternalIncludePath />
+    <ReferencePath />
+    <LibraryPath />
+    <LibraryWPath />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='YRC1000_galactic|Win32'">
     <NMakeBuildCommandLine>"$(MP_VS_Install)mpBuilder.exe" -c $(Configuration) -p "$(ProjectDir)\" -n "mr2_yrc1_g" -b "$(SolutionDir)bin\$(Configuration)" -o build -i "$(MP_VS_Install)YRC1000\inc"</NMakeBuildCommandLine>
