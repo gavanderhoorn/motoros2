@@ -65,7 +65,7 @@ extern ULONG tickGet();
 
 #define SO_BROADCAST    0x0020
 extern STATUS Ros_setsockopt(int s, int level, int optname, char* optval, int optlen);
-
+#if 0
 #if defined (DX100) || defined (FS100)
 // VxWorks 5.5/6.8
 extern int localtime_r(const time_t* timer, struct tm* timeBuffer);
@@ -75,8 +75,9 @@ struct tm* localtime_r(const time_t* timep, struct tm* result);
 #else
 #error localtime_r: unsupported platform
 #endif
+#endif
 
-
+#if 0
 #if defined (YRC1000) || defined (YRC1000u) || defined (DX200) || defined (FS100) || defined (DX100)
 // from clockLib
 struct timespec
@@ -93,7 +94,7 @@ extern int clock_gettime(clockid_t clock_id, /* clock ID (always CLOCK_REALTIME)
 #else
 #error clock_gettime: unsupported platform
 #endif
-
+#endif
 
 // Attempts to determine whether the specific link is UP (ie: cable is connected).
 // IFF return value is 'OK', 'is_up' will reflect link state. In all other cases,
