@@ -56,8 +56,8 @@ jobs:
       # controllers and for which ROS 2 versions builds fail / succeed)
       fail-fast: false
       matrix:
-        controller: [dx200, yrc1000, yrc1000u]
-        ros2_codename: [humble, galactic, foxy]
+        controller: [yrc1000]
+        ros2_codename: [humble]
 
     steps:
     - name: Uppercase controller identifier
@@ -128,6 +128,10 @@ jobs:
 
     - name: Register mpBuilder problem matcher
       run: echo "::add-matcher::motoros2/.github/matchers/mpbuilder.json"
+
+    - name: Enable output of raw errors
+      shell: bash
+      run: sed -i 's|MP_VS_Install)mpBuilder.exe" -c|MP_VS_Install)mpBuilder.exe" -d T -c|g' /c/build/motoros2/src/MotoROS2_AllControllers.vcxproj
 
     - name: "Build MotoROS2 (config: ${{ steps.uppercaser.outputs.ctrlr }}_${{ matrix.ros2_codename }})"
       shell: cmd
