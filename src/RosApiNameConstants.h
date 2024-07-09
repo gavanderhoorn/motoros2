@@ -28,6 +28,10 @@
 #define SERVICE_NAME_STOP_TRAJ_MODE "stop_traj_mode"
 #define SERVICE_NAME_QUEUE_TRAJ_POINT "queue_traj_point"
 #define SERVICE_NAME_SELECT_MOTION_TOOL "select_motion_tool"
+#define SERVICE_NAME_LIST_JOBS "job/list"
+#define SERVICE_NAME_GET_JOB "job/get"
+#define SERVICE_NAME_PUT_JOB "job/put"
+#define SERVICE_NAME_DELETE_JOB "job/delete"
 
 #define ACTION_NAME_FOLLOW_JOINT_TRAJECTORY "follow_joint_trajectory"
 

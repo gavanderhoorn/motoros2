@@ -70,6 +70,10 @@
 #include <motoros2_interfaces/srv/start_point_queue_mode.h>
 #include <motoros2_interfaces/srv/queue_traj_point.h>
 #include <motoros2_interfaces/srv/select_motion_tool.h>
+#include <motoros2_interfaces/srv/list_jobs.h>
+#include <motoros2_interfaces/srv/get_job.h>
+#include <motoros2_interfaces/srv/put_job.h>
+#include <motoros2_interfaces/srv/delete_job.h>
 
 //============================================
 // MotoROS
@@ -94,6 +98,10 @@
 #include "ServiceStartPointQueueMode.h"
 #include "ServiceStopTrajMode.h"
 #include "ServiceSelectMotionTool.h"
+#include "ServiceJobList.h"
+#include "ServiceJobGet.h"
+#include "ServiceJobPut.h"
+#include "ServiceJobDelete.h"
 #include "MotionControl.h"
 #include "ConfigFile.h"
 #include "RosApiNameConstants.h"
