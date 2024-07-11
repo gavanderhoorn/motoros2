@@ -131,6 +131,9 @@ jobs:
     - name: Register mpBuilder problem matcher
       run: echo "::add-matcher::motoros2/.github/matchers/mpbuilder.json"
 
+    - name: Register GCC problem matcher
+      run: echo "::add-matcher::motoros2/.github/matchers/gcc.json"
+
     - name: Enable output of raw errors
       shell: bash
       run: sed -i 's|MP_VS_Install)mpBuilder.exe" -c|MP_VS_Install)mpBuilder.exe" -d T -c|g' /c/build/motoros2/src/MotoROS2_AllControllers.vcxproj
