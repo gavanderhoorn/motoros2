@@ -84,7 +84,7 @@ void Ros_ServicePutJob_Trigger(const void* request_msg, void* response_msg)
     }
     //an empty job is definitely not OK
     //TODO(gavanderhoorn): what is the minimum size of a complete job?
-    if (Ros_strnlen(RAW_CHAR_P(request->content), MAX_JOB_FILE_SIZE) < 50)
+    if (Ros_strnlen(RAW_CHAR_P(request->contents), MAX_JOB_FILE_SIZE) < 50)
     {
         rosidl_runtime_c__String__assign(&response->message, "Not enough data for job (check 'content' field)");
         response->result_code = -1;
@@ -109,8 +109,8 @@ void Ros_ServicePutJob_Trigger(const void* request_msg, void* response_msg)
     }
 
     //write contents
-    size_t num_bytes = Ros_strnlen(RAW_CHAR_P(request->content), MAX_JOB_FILE_SIZE);
-    ret = mpWrite(fd, RAW_CHAR_P(request->content), num_bytes);
+    size_t num_bytes = Ros_strnlen(RAW_CHAR_P(request->contents), MAX_JOB_FILE_SIZE);
+    ret = mpWrite(fd, RAW_CHAR_P(request->contents), num_bytes);
     if (ret < num_bytes)
     {
         Ros_Debug_BroadcastMsg("%s: failed to write job contents: %x", __func__, ret);
