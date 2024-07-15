@@ -434,6 +434,19 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
         &executor_io_control, &g_serviceListJobs, &g_messages_ListJobs.request,
         &g_messages_ListJobs.response, Ros_ServiceListJobs_Trigger);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_ADD_SERVICE_LIST_JOBS, "Failed adding service (%d)", (int)rc);
+    rc = rclc_executor_add_service(
+        &executor_io_control, &g_serviceGetJob, &g_messages_GetJob.request,
+        &g_messages_GetJob.response, Ros_ServiceGetJob_Trigger);
+    motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_ADD_SERVICE_GET_JOB, "Failed adding service (%d)", (int)rc);
+    rc = rclc_executor_add_service(
+        &executor_io_control, &g_servicePutJob, &g_messages_PutJob.request,
+        &g_messages_PutJob.response, Ros_ServicePutJob_Trigger);
+    motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_ADD_SERVICE_PUT_JOB, "Failed adding service (%d)", (int)rc);
+    rc = rclc_executor_add_service(
+        &executor_io_control, &g_serviceDeleteJob, &g_messages_DeleteJob.request,
+        &g_messages_DeleteJob.response, Ros_ServiceDeleteJob_Trigger);
+    motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_ADD_SERVICE_DELETE_JOB, "Failed adding service (%d)", (int)rc);
+
 
     //===========================================================
 

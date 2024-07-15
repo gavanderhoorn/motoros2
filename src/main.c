@@ -132,6 +132,9 @@ void RosInitTask()
         Ros_ServiceSelectMotionTool_Initialize();
 
         Ros_ServiceListJobs_Initialize();
+        Ros_ServiceGetJob_Initialize();
+        Ros_ServicePutJob_Initialize();
+        Ros_ServiceDeleteJob_Initialize();
 
         // Start executor that performs all communication
         // (This task deletes itself when the agent disconnects.)
@@ -204,6 +207,9 @@ void RosInitTask()
         mpSemTake(semCommunicationExecutorStatus, WAIT_FOREVER);
         mpSemDelete(semCommunicationExecutorStatus);
 
+        Ros_ServiceDeleteJob_Cleanup();
+        Ros_ServicePutJob_Cleanup();
+        Ros_ServiceGetJob_Cleanup();
         Ros_ServiceListJobs_Cleanup();
 
         Ros_ServiceSelectMotionTool_Cleanup();

@@ -27,7 +27,8 @@
 //      timers +                                            1
 //      service read & write I/O +                          6
 //      service job/list                                    1
-#define QUANTITY_OF_HANDLES_FOR_IO_EXECUTOR                 (8)
+//      service job/{delete,get,put}                        3
+#define QUANTITY_OF_HANDLES_FOR_IO_EXECUTOR                 (11)
 
 typedef struct
 {
