@@ -7,6 +7,13 @@
 
 #include "MotoROS.h"
 
+#define MAX_JOB_NAME_LENGTH_WITH_EXTENSION (MAX_JOB_NAME_LEN + 4 + 1)   //32 characters for the name, plus 4 for extension, plus terminating null
+//TODO(gavanderhoorn):
+#define MAX_JOB_FILE_SIZE (1024)  //in bytes
+
+#define RAW_CHAR_P(micro_ros_str) (micro_ros_str.data)
+
+
 rcl_service_t g_servicePutJob;
 
 ServicePutJob_Messages g_messages_PutJob;
@@ -53,8 +60,84 @@ void Ros_ServicePutJob_Trigger(const void* request_msg, void* response_msg)
 
     Ros_Debug_BroadcastMsg("%s: enter", __func__);
 
+    Ros_Debug_BroadcastMsg("%s: request to create job with name: '%s'",
+        __func__, RAW_CHAR_P(request->name));
+
     rosidl_runtime_c__String__assign(&response->message, "Not implemented");
     response->result_code = 0;
+    goto DONE;
+
+
+    //request validation
+    if (Ros_strnlen(RAW_CHAR_P(request->name), MAX_JOB_NAME_LEN - 1) == 0)
+    {
+        rosidl_runtime_c__String__assign(&response->message, "Empty job name not allowed");
+        response->result_code = 10;
+        goto DONE;
+    }
+    //check against some 'arbitrary' length longer than the allowed maximum
+    if (Ros_strnlen(RAW_CHAR_P(request->name), 64) >= MAX_JOB_NAME_LEN)
+    {
+        rosidl_runtime_c__String__assign(&response->message, "Job name too long");
+        response->result_code = 11;
+        goto DONE;
+    }
+    //an empty job is definitely not OK
+    //TODO(gavanderhoorn): what is the minimum size of a complete job?
+    if (Ros_strnlen(RAW_CHAR_P(request->contents), MAX_JOB_FILE_SIZE) < 50)
+    {
+        rosidl_runtime_c__String__assign(&response->message, "Not enough data for job (check 'content' field)");
+        response->result_code = 12;
+        goto DONE;
+    }
+
+    //validated, attempt to create the job
+    char pathToGeneratedJob[_PARM_PATH_MAX];
+    int fd;
+    int ret;
+
+    //create job on DRAM
+    sprintf(pathToGeneratedJob, "%s\\%s.%s", MP_DRAM_DEV_DOS, RAW_CHAR_P(request->name), MP_EXT_STR_JBI);
+    Ros_Debug_BroadcastMsg("%s: creating INFORM job at: '%s'", __func__, pathToGeneratedJob);
+
+    if ((fd = mpCreate(pathToGeneratedJob, O_WRONLY)) < 0)
+    {
+        Ros_Debug_BroadcastMsg("%s: failed to create job on DRAM drive: %x",__func__, fd);
+        rosidl_runtime_c__String__assign(&response->message, "Could not create job on DRAM drive");
+        response->result_code = 13;
+        goto DONE;
+    }
+
+    //write contents
+    size_t num_bytes = Ros_strnlen(RAW_CHAR_P(request->contents), MAX_JOB_FILE_SIZE);
+    ret = mpWrite(fd, RAW_CHAR_P(request->contents), num_bytes);
+    if (ret < num_bytes)
+    {
+        Ros_Debug_BroadcastMsg("%s: failed to write job contents: %x", __func__, ret);
+        rosidl_runtime_c__String__assign(&response->message, "Could not write job contents to file");
+        response->result_code = 14;
+        goto DONE;
+    }
+    mpClose(fd);
+
+    //load job
+    char jobNameWithExtension[MAX_JOB_NAME_LENGTH_WITH_EXTENSION];
+    snprintf(jobNameWithExtension, MAX_JOB_NAME_LENGTH_WITH_EXTENSION, "%s.%s", RAW_CHAR_P(request->name), MP_EXT_STR_JBI);
+    Ros_Debug_BroadcastMsg("%s: loading INFORM job from: '%s'", __func__, jobNameWithExtension);
+
+    ret = mpLoadFile(MP_DRV_ID_DRAM, "", jobNameWithExtension);
+    if (ret != OK)
+    {
+        Ros_Debug_BroadcastMsg("%s: could not load job to CMOS: 0x%04X", __func__, ret);
+        rosidl_runtime_c__String__assign(&response->message, "Could not load job to CMOS");
+        response->result_code = 15;
+        goto DONE;
+    }
+
+    //success
+    Ros_Debug_BroadcastMsg("%s: loaded INFORM job", __func__);
+    rosidl_runtime_c__String__assign(&response->message, "Loaded INFORM job");
+    response->result_code = 1;
 
 DONE:
     Ros_Debug_BroadcastMsg("%s: exit", __func__);

@@ -7,6 +7,8 @@
 
 #include "MotoROS.h"
 
+#define RAW_CHAR_P(micro_ros_str) (micro_ros_str.data)
+
 rcl_service_t g_serviceDeleteJob;
 
 ServiceDeleteJob_Messages g_messages_DeleteJob;
@@ -53,8 +55,55 @@ void Ros_ServiceDeleteJob_Trigger(const void* request_msg, void* response_msg)
 
     Ros_Debug_BroadcastMsg("%s: enter", __func__);
 
+    Ros_Debug_BroadcastMsg("%s: request to delete job with name: '%s'",
+        __func__, RAW_CHAR_P(request->name));
+
     rosidl_runtime_c__String__assign(&response->message, "Not implemented");
     response->result_code = 0;
+    goto DONE;
+
+    //request validation
+    //TODO(gavanderhoorn): should we only allow this in REMOTE mode?
+
+    if (Ros_strnlen(RAW_CHAR_P(request->name), MAX_JOB_NAME_LEN - 1) == 0)
+    {
+        rosidl_runtime_c__String__assign(&response->message, "Empty job name not allowed");
+        response->result_code = 11;
+        goto DONE;
+    }
+    //check against some 'arbitrary' length longer than the allowed maximum
+    if (Ros_strnlen(RAW_CHAR_P(request->name), 64) >= MAX_JOB_NAME_LEN)
+    {
+        rosidl_runtime_c__String__assign(&response->message, "Job name too long");
+        response->result_code = 12;
+        goto DONE;
+    }
+
+    //validated, attempt deletion
+    MP_DELETE_JOB_SEND_DATA sData;
+    MP_STD_RSP_DATA rData;
+
+    //TODO(gavanderhoorn): check terminating nul
+    //TODO(gavanderhoorn): check return value
+    bzero(&sData, sizeof(sData));
+    strncpy(sData.cJobName, RAW_CHAR_P(request->name), MAX_JOB_NAME_LEN - 1);
+    LONG status = mpDeleteJob(&sData, &rData);
+    if (status != OK)
+    {
+        rosidl_runtime_c__String__assign(&response->message, "Error invoking M+ API");
+        response->result_code = 13;
+        goto DONE;
+    }
+
+    if (rData.err_no != 0)
+    {
+        rosidl_runtime_c__String__assign(&response->message, "Could not delete job");
+        response->result_code = -rData.err_no;
+        goto DONE;
+    }
+
+    rosidl_runtime_c__String__assign(&response->message, "Success");
+    response->result_code = 1;
 
 DONE:
     Ros_Debug_BroadcastMsg("%s: exit", __func__);
