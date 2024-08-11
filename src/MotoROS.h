@@ -72,6 +72,9 @@
 #include <motoros2_interfaces/srv/select_motion_tool.h>
 #include <motoros2_interfaces/srv/list_inform_jobs.h>
 #include <motoros2_interfaces/msg/inform_job_crud_result_codes.h>
+#include <motoros2_interfaces/srv/get_inform_job.h>
+#include <motoros2_interfaces/srv/put_inform_job.h>
+#include <motoros2_interfaces/srv/delete_inform_job.h>
 
 //============================================
 // MotoROS
@@ -97,6 +100,9 @@
 #include "ServiceStopTrajMode.h"
 #include "ServiceSelectMotionTool.h"
 #include "ServiceInformJobList.h"
+#include "ServiceInformJobGet.h"
+#include "ServiceInformJobPut.h"
+#include "ServiceInformJobDelete.h"
 #include "MotionControl.h"
 #include "ConfigFile.h"
 #include "RosApiNameConstants.h"
