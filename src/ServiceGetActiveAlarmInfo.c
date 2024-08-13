@@ -127,7 +127,6 @@ void Ros_ServiceGetActiveAlarmInfo_Trigger(const void* request_msg, void* respon
     response->errors.size = 0;
 
     // retrieve info on active alarms and copy data
-    response->alarms.size = alarmData.usAlarmNum;
     for(size_t i = 0; i < response->alarms.size; ++i)
     {
         Ros_Debug_BroadcastMsg("%s: processing alarm %04d (%d out of %d)",
@@ -146,7 +145,11 @@ void Ros_ServiceGetActiveAlarmInfo_Trigger(const void* request_msg, void* respon
         if (status != OK)
         {
             Ros_Debug_BroadcastMsg(
-                "%s: error retrieving alarm info (%d), skipping", __func__, status);
+                "%s: error retrieving alarm info (%d), aborting", __func__, status);
+            rosidl_runtime_c__String__assign(
+                &response->result_message, MSG_RC_STR(ERR_RETRIEVING_ALARM_INFO));
+            response->result_code = MSG_RC(ERR_RETRIEVING_ALARM_INFO);
+            goto DONE;
         }
         else
         {
@@ -154,6 +157,10 @@ void Ros_ServiceGetActiveAlarmInfo_Trigger(const void* request_msg, void* respon
                 &response->alarms.data[i].message, alarmInfoData.msg, ROS_MAX_ALARM_MSG_LEN);
         }
     }
+
+    // store nr of returned items only here, to avoid returning partial results (in case of
+    // errors retrieving alarm info)
+    response->alarms.size = alarmData.usAlarmNum;
 
     // retrieve info on active error(s)
     if (0 < alarmData.usErrorNo)
@@ -165,7 +172,6 @@ void Ros_ServiceGetActiveAlarmInfo_Trigger(const void* request_msg, void* respon
         Ros_Debug_BroadcastMsg("%s: processing error %04d (%d out of %d)",
             __func__, alarmData.usErrorNo, kNumActiveErrors, MAX_ERROR_COUNT);
 
-        response->errors.size = kNumActiveErrors;
         response->errors.data[kFirstErrorIdx].number = alarmData.usErrorNo;
         response->errors.data[kFirstErrorIdx].sub_code = alarmData.usErrorData;
 
@@ -176,13 +182,21 @@ void Ros_ServiceGetActiveAlarmInfo_Trigger(const void* request_msg, void* respon
         if (status != OK)
         {
             Ros_Debug_BroadcastMsg(
-                "%s: error retrieving error info (%d), skipping", __func__, status);
+                "%s: error retrieving error info (%d), aborting", __func__, status);
+            rosidl_runtime_c__String__assign(
+                &response->result_message, MSG_RC_STR(ERR_RETRIEVING_ERROR_INFO));
+            response->result_code = MSG_RC(ERR_RETRIEVING_ERROR_INFO);
+            goto DONE;
         }
         else
         {
             rosidl_runtime_c__String__assignn(
                 &response->errors.data[kFirstErrorIdx].message, errorInfoData.msg, ROS_MAX_ERROR_MSG_LEN);
         }
+
+        // store nr of returned items only here, to avoid returning partial results (in
+        // case of errors retrieving error info)
+        response->errors.size = kNumActiveErrors;
     }
 
     rosidl_runtime_c__String__assign(&response->result_message, MSG_RC_STR(OK));
