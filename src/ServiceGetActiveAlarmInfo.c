@@ -13,6 +13,8 @@ ServiceGetActiveAlarmInfo_Messages g_messages_GetActiveAlarmInfo;
 
 typedef motoros2_interfaces__srv__GetActiveAlarmInfo_Response GetActiveAlarmInfoResponse;
 
+#define MSG_RC(x) (motoros2_interfaces__srv__GetActiveAlarmInfo_Response__RC_ ## x)
+#define MSG_RC_STR(x) (motoros2_interfaces__srv__GetActiveAlarmInfo_Response__STR_ ## x)
 
 static micro_ros_utilities_memory_rule_t mem_rules_response_[] =
 {
@@ -109,9 +111,8 @@ void Ros_ServiceGetActiveAlarmInfo_Trigger(const void* request_msg, void* respon
     {
         // can't continue if M+ API fails
         Ros_Debug_BroadcastMsg("%s: error retrieving alarm data", __func__);
-        // TODO: use proper error codes + strings
-        rosidl_runtime_c__String__assign(&response->result_message, "M+ API error");
-        response->result_code = -1;
+        rosidl_runtime_c__String__assign(&response->result_message, MSG_RC_STR(ERR_RETRIEVING_ALARM_DATA));
+        response->result_code = MSG_RC(ERR_RETRIEVING_ALARM_DATA);
         goto DONE;
     }
 
@@ -184,9 +185,8 @@ void Ros_ServiceGetActiveAlarmInfo_Trigger(const void* request_msg, void* respon
         }
     }
 
-    // TODO: use proper error codes + strings
-    rosidl_runtime_c__String__assign(&response->result_message, "success");
-    response->result_code = 1;
+    rosidl_runtime_c__String__assign(&response->result_message, MSG_RC_STR(OK));
+    response->result_code = MSG_RC(OK);
 
 DONE:
     Ros_Debug_BroadcastMsg("%s: exit: '%s' (%lu)", __func__, response->result_message.data,
