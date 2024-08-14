@@ -203,7 +203,7 @@ void Ros_ServiceGetInformJob_Trigger(const void* request_msg, void* response_msg
     }
 
     //finally: store nr of bytes we'll be returning
-    response->contents.size = pStat.st_size;
+    response->contents.size = (size_t) pStat.st_size;
 
     //complete successful response
     rosidl_runtime_c__String__assign(&response->message, "Success");
