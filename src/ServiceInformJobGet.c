@@ -174,7 +174,7 @@ void Ros_ServiceGetInformJob_Trigger(const void* request_msg, void* response_msg
     //we artifically limit the maximum size of jobs we can manage, so check
     if (pStat.st_size >= MAX_JOB_FILE_SIZE)
     {
-        Ros_Debug_BroadcastMsg("%s: error: '%s' too big: %d bytes (max %d)",
+        Ros_Debug_BroadcastMsg("%s: error: '%s' too big: %lld bytes (max %d)",
             __func__, pathDram, pStat.st_size, MAX_JOB_FILE_SIZE);
         rosidl_runtime_c__String__assign(&response->message, "Job content exceeds maximum file size");
         response->result_code = 15;
@@ -195,7 +195,7 @@ void Ros_ServiceGetInformJob_Trigger(const void* request_msg, void* response_msg
     }
     else if (ret < pStat.st_size)
     {
-        Ros_Debug_BroadcastMsg("%s: error reading '%s': read only %d of %d bytes",
+        Ros_Debug_BroadcastMsg("%s: error reading '%s': read only %d of %lld bytes",
             __func__, pathDram, ret, pStat.st_size);
         rosidl_runtime_c__String__assign(&response->message, "Couldn't read complete job contents");
         response->result_code = 17;
@@ -209,7 +209,7 @@ void Ros_ServiceGetInformJob_Trigger(const void* request_msg, void* response_msg
     rosidl_runtime_c__String__assign(&response->message, "Success");
     response->result_code = 1;
 
-    Ros_Debug_BroadcastMsg("%s: returning %d bytes for job '%s'",
+    Ros_Debug_BroadcastMsg("%s: returning %lld bytes for job '%s'",
         __func__, pStat.st_size, RAW_CHAR_P(request->name));
 
 DONE_W_FD:
