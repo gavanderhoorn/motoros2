@@ -16,20 +16,56 @@ typedef motoros2_interfaces__srv__PutInformJob_Request PutInformJobRequest;
 typedef motoros2_interfaces__srv__PutInformJob_Response PutInformJobResponse;
 
 
+static micro_ros_utilities_memory_rule_t mem_rules_request_[] =
+{
+    //longer than maximum job name length (32 bytes + some extra)
+    {"name", 64},
+    {"contents", MAX_JOB_FILE_SIZE},
+};
+static micro_ros_utilities_memory_conf_t mem_conf_request_ = { 0 };
+static const rosidl_message_type_support_t* type_support_request_ = NULL;
+
+
+static micro_ros_utilities_memory_rule_t mem_rules_response_[] =
+{
+    {"message", 64},
+};
+static micro_ros_utilities_memory_conf_t mem_conf_response_ = { 0 };
+static const rosidl_message_type_support_t* type_support_response_ = NULL;
+
+
 void Ros_ServicePutInformJob_Initialize()
 {
     MOTOROS2_MEM_TRACE_START(svc_put_inform_job_init);
 
+    // init request
+    mem_conf_request_.allocator = &g_motoros2_Allocator;
+    mem_conf_request_.rules = mem_rules_request_;
+    mem_conf_request_.n_rules = sizeof(mem_rules_request_) / sizeof(mem_rules_request_[0]);
+    type_support_request_ = ROSIDL_GET_MSG_TYPE_SUPPORT(motoros2_interfaces, srv, PutInformJob_Request);
+    motoRosAssert_withMsg(
+        micro_ros_utilities_create_message_memory(
+            type_support_request_, &g_messages_PutInformJob.request, mem_conf_request_),
+        SUBCODE_FAIL_INIT_SERVICE_PUT_INFORM_JOB, "Failed to init request");
+    g_messages_PutInformJob.request.contents.size = 0;
+
+    // init response
+    mem_conf_response_.allocator = &g_motoros2_Allocator;
+    mem_conf_response_.rules = mem_rules_response_;
+    mem_conf_response_.n_rules = sizeof(mem_rules_response_) / sizeof(mem_rules_response_[0]);
+    type_support_response_ = ROSIDL_GET_MSG_TYPE_SUPPORT(motoros2_interfaces, srv, PutInformJob_Response);
+    motoRosAssert_withMsg(
+        micro_ros_utilities_create_message_memory(
+            type_support_response_, &g_messages_PutInformJob.response, mem_conf_response_),
+        SUBCODE_FAIL_INIT_SERVICE_PUT_INFORM_JOB, "Failed to init response");
+
+    // init service server
     const rosidl_service_type_support_t* type_support =
         ROSIDL_GET_SRV_TYPE_SUPPORT(motoros2_interfaces, srv, PutInformJob);
-
     rcl_ret_t ret = rclc_service_init_default(&g_servicePutInformJob,
         &g_microRosNodeInfo.node, type_support, SERVICE_NAME_PUT_INFORM_JOB);
     motoRosAssert_withMsg(ret == RCL_RET_OK,
         SUBCODE_FAIL_INIT_SERVICE_PUT_INFORM_JOB, "Failed to init service (%d)", (int)ret);
-
-    rosidl_runtime_c__String__init(&g_messages_PutInformJob.response.message);
-    rosidl_runtime_c__byte__Sequence__init(&g_messages_PutInformJob.request.contents, MAX_JOB_FILE_SIZE);
 
     MOTOROS2_MEM_TRACE_REPORT(svc_put_inform_job_init);
 }
@@ -43,8 +79,14 @@ void Ros_ServicePutInformJob_Cleanup()
     ret = rcl_service_fini(&g_servicePutInformJob, &g_microRosNodeInfo.node);
     if (ret != RCL_RET_OK)
         Ros_Debug_BroadcastMsg("Failed cleaning up " SERVICE_NAME_PUT_INFORM_JOB " service: %d", ret);
-    rosidl_runtime_c__byte__Sequence__fini(&g_messages_PutInformJob.request.contents);
-    rosidl_runtime_c__String__fini(&g_messages_PutInformJob.response.message);
+
+    bool result = micro_ros_utilities_destroy_message_memory(
+        type_support_request_, &g_messages_PutInformJob.request, mem_conf_request_);
+    Ros_Debug_BroadcastMsg("%s: cleanup request msg memory: %d", __func__, result);
+
+    result = micro_ros_utilities_destroy_message_memory(
+        type_support_response_, &g_messages_PutInformJob.response, mem_conf_response_);
+    Ros_Debug_BroadcastMsg("%s: cleanup response msg memory: %d", __func__, result);
 
     MOTOROS2_MEM_TRACE_REPORT(svc_put_inform_job_fini);
 }
