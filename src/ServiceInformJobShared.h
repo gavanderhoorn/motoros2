@@ -9,7 +9,7 @@
 #define MOTOROS2_SERVICE_INFORM_JOB_SHARED_H
 
 
-#define MAX_JOB_FILE_SIZE (4 * 1024)
+#define MAX_JOB_FILE_SIZE (64 * 1024)
 #define RAW_CHAR_P(micro_ros_str) (micro_ros_str.data)
 
 //32 characters for the name, plus 4 for extension, plus terminating null
