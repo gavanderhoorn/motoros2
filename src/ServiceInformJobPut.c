@@ -15,11 +15,10 @@ ServicePutInformJob_Messages g_messages_PutInformJob;
 typedef motoros2_interfaces__srv__PutInformJob_Request PutInformJobRequest;
 typedef motoros2_interfaces__srv__PutInformJob_Response PutInformJobResponse;
 
+static const char TEMPORARY_DRAM_JOB_NAME[] = "mr2_temp_job";
 
 static micro_ros_utilities_memory_rule_t mem_rules_request_[] =
 {
-    //longer than maximum job name length (32 bytes + some extra)
-    {"name", 64},
     {"contents", MAX_JOB_FILE_SIZE},
 };
 static micro_ros_utilities_memory_conf_t mem_conf_request_ = { 0 };
@@ -93,21 +92,6 @@ void Ros_ServicePutInformJob_Cleanup()
 
 static bool ValidateRequest(PutInformJobRequest const* request, PutInformJobResponse* const response)
 {
-    if (Ros_strnlen(RAW_CHAR_P(request->name), MAX_JOB_NAME_LEN - 1) == 0)
-    {
-        rosidl_runtime_c__String__assign(&response->message, "Empty job name not allowed");
-        response->result_code = 10;
-        return false;
-    }
-
-    //check against some 'arbitrary' length longer than the allowed maximum
-    if (Ros_strnlen(RAW_CHAR_P(request->name), MAX_JOB_NAME_LEN + 10) >= MAX_JOB_NAME_LEN)
-    {
-        rosidl_runtime_c__String__assign(&response->message, "Job name too long");
-        response->result_code = 11;
-        return false;
-    }
-
     //an empty job is definitely not OK
     //TODO(gavanderhoorn): what is the minimum size of a complete job?
     if (request->contents.size < 50)
@@ -122,8 +106,8 @@ static bool ValidateRequest(PutInformJobRequest const* request, PutInformJobResp
     //in the pre-allocated buffer will not be seen by this code
     if (request->contents.size >= MAX_JOB_FILE_SIZE)
     {
-        Ros_Debug_BroadcastMsg("%s: error: '%s' too big: %d bytes (max %d)",
-            __func__, RAW_CHAR_P(request->name), request->contents.size, MAX_JOB_FILE_SIZE);
+        Ros_Debug_BroadcastMsg("%s: error: job too big: %d bytes (max %d)",
+            __func__, request->contents.size, MAX_JOB_FILE_SIZE);
         rosidl_runtime_c__String__assign(&response->message, "Job content exceeds maximum file size");
         response->result_code = 13;
         return false;
@@ -139,9 +123,6 @@ void Ros_ServicePutInformJob_Trigger(const void* request_msg, void* response_msg
 
     Ros_Debug_BroadcastMsg("%s: enter", __func__);
 
-    Ros_Debug_BroadcastMsg("%s: request to create job with name: '%s'",
-        __func__, RAW_CHAR_P(request->name));
-
     response->result_code = 0;
     rosidl_runtime_c__String__assign(&response->message, "");
 
@@ -154,7 +135,7 @@ void Ros_ServicePutInformJob_Trigger(const void* request_msg, void* response_msg
 
     //validation OK (enough): attempt to create the job (first on RAM drive, then load it to SRAM)
     char newJobPath[_PARM_PATH_MAX];
-    sprintf(newJobPath, "%s\\%s.%s", MP_DRAM_DEV_DOS, RAW_CHAR_P(request->name), MP_EXT_STR_JBI);
+    sprintf(newJobPath, "%s\\%s.%s", MP_DRAM_DEV_DOS, TEMPORARY_DRAM_JOB_NAME, MP_EXT_STR_JBI);
     Ros_Debug_BroadcastMsg("%s: creating INFORM job at: '%s'", __func__, newJobPath);
 
     int fd;
@@ -189,7 +170,7 @@ void Ros_ServicePutInformJob_Trigger(const void* request_msg, void* response_msg
 
     //now load the job to SRAM from the RAM drive
     char jobNameWithExtension[MAX_JOB_NAME_LENGTH_WITH_EXTENSION];
-    snprintf(jobNameWithExtension, MAX_JOB_NAME_LENGTH_WITH_EXTENSION, "%s.%s", RAW_CHAR_P(request->name), MP_EXT_STR_JBI);
+    snprintf(jobNameWithExtension, MAX_JOB_NAME_LENGTH_WITH_EXTENSION, "%s.%s", TEMPORARY_DRAM_JOB_NAME, MP_EXT_STR_JBI);
     Ros_Debug_BroadcastMsg("%s: loading INFORM job from: '%s'", __func__, jobNameWithExtension);
 
     ret = mpLoadFile(MP_DRV_ID_DRAM, "", jobNameWithExtension);
@@ -209,6 +190,9 @@ void Ros_ServicePutInformJob_Trigger(const void* request_msg, void* response_msg
 
 DONE_W_FD:
     mpClose(fd);
+
+    //cleanup temporary file
+    mpRemove(newJobPath);
 
 DONE:
     Ros_Debug_BroadcastMsg("%s: exit", __func__);
