@@ -56,7 +56,7 @@ void RosInitTask()
     g_Ros_Controller.tidIncMoveThread = INVALID_TASK;
 
     //Check to see if another version of MotoROS2.out is running on this controller.
-    motoRosAssert_withMsg(!Ros_IsOtherInstanceRunning(), SUBCODE_MULTIPLE_INSTANCES_DETECTED, "MotoROS2 - Multiple Instances");
+    // motoRosAssert_withMsg(!Ros_IsOtherInstanceRunning(), SUBCODE_MULTIPLE_INSTANCES_DETECTED, "MotoROS2 - Multiple Instances");
 
     // init debug broadcast
     Ros_Debug_BroadcastMsg("---");
@@ -123,15 +123,15 @@ void RosInitTask()
         Ros_InformChecker_ValidateJob();
 
         Ros_PositionMonitor_Initialize();
-        Ros_ActionServer_FJT_Initialize(); //initialize action server - FollowJointTrajectory
+        // Ros_ActionServer_FJT_Initialize(); //initialize action server - FollowJointTrajectory
 
-        Ros_ServiceQueueTrajPoint_Initialize();
-        Ros_ServiceReadWriteIO_Initialize();
+        // Ros_ServiceQueueTrajPoint_Initialize();
+        // Ros_ServiceReadWriteIO_Initialize();
         Ros_ServiceResetError_Initialize();
-        Ros_ServiceStartTrajMode_Initialize();
-        Ros_ServiceStartPointQueueMode_Initialize();
-        Ros_ServiceStopTrajMode_Initialize();
-        Ros_ServiceSelectMotionTool_Initialize();
+        // Ros_ServiceStartTrajMode_Initialize();
+        // Ros_ServiceStartPointQueueMode_Initialize();
+        // Ros_ServiceStopTrajMode_Initialize();
+        // Ros_ServiceSelectMotionTool_Initialize();
 
         // Start executor that performs all communication
         // (This task deletes itself when the agent disconnects.)
@@ -151,6 +151,7 @@ void RosInitTask()
 
         while(g_Ros_Communication_AgentIsConnected)
         {
+#if 1
             //figure out how long to sleep to achieve the user-configured rate
             ULONG tickNow = tickGet();
 
@@ -158,17 +159,25 @@ void RosInitTask()
             if (tickNow > tickBefore)
                 tickDiff = tickNow - tickBefore;
             else //unsigned rollover
-                tickDiff = (UINT_MAX - tickBefore) + tickNow;
+                tickDiff = (ULONG_MAX - tickBefore) + tickNow;
 
             float elapsedMs = tickDiff * mpGetRtc(); //time it took to read and publish data
 
             if (elapsedMs < g_nodeConfigSettings.controller_status_monitor_period)
                 Ros_Sleep(g_nodeConfigSettings.controller_status_monitor_period - elapsedMs);
+#else
+                Ros_Sleep(g_nodeConfigSettings.controller_status_monitor_period);
+#endif
+#if 1
             else
-                Ros_Sleep(1); //don't hog the CPU from other tasks
+            {
+                Ros_Debug_BroadcastMsg("too long: %.9f (%lu)", (g_nodeConfigSettings.controller_status_monitor_period - elapsedMs), tickDiff);
+                Ros_Sleep(g_nodeConfigSettings.controller_status_monitor_period);
+                // Ros_Sleep(1); //don't hog the CPU from other tasks
+            }
 
             tickBefore = tickGet();
-
+#endif
             //Check controller status.
             //This is being done on an independent thread (as opposed to being refreshed on-demand)
             //so that the motion thread can react as needed.
@@ -204,15 +213,15 @@ void RosInitTask()
         mpSemTake(semCommunicationExecutorStatus, WAIT_FOREVER);
         mpSemDelete(semCommunicationExecutorStatus);
 
-        Ros_ServiceSelectMotionTool_Cleanup();
-        Ros_ServiceStopTrajMode_Cleanup();
-        Ros_ServiceStartTrajMode_Cleanup();
-        Ros_ServiceStartPointQueueMode_Cleanup();
+        // Ros_ServiceSelectMotionTool_Cleanup();
+        // Ros_ServiceStopTrajMode_Cleanup();
+        // Ros_ServiceStartTrajMode_Cleanup();
+        // Ros_ServiceStartPointQueueMode_Cleanup();
         Ros_ServiceResetError_Cleanup();
-        Ros_ServiceReadWriteIO_Cleanup();
-        Ros_ServiceQueueTrajPoint_Cleanup();
+        // Ros_ServiceReadWriteIO_Cleanup();
+        // Ros_ServiceQueueTrajPoint_Cleanup();
 
-        Ros_ActionServer_FJT_Cleanup();
+        // Ros_ActionServer_FJT_Cleanup();
         Ros_PositionMonitor_Cleanup();
         Ros_Controller_Cleanup();
         Ros_Communication_Cleanup(); 

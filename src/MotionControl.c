@@ -1050,7 +1050,7 @@ void Ros_MotionControl_IncMoveLoopStart() //<-- IP_CLK priority task
                 // Send pulse increment to the controller command position
                 ret = mpExRcsIncrementMove(&moveData);
 
-                Ros_ActionServer_FJT_UpdateProgressTracker(&moveData);
+                // Ros_ActionServer_FJT_UpdateProgressTracker(&moveData);
             }
             else
                 ret = 0;

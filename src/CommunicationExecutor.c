@@ -221,7 +221,7 @@ void Ros_Communication_PingAgentConnection(rcl_timer_t* timer, int64_t last_call
     if (g_Ros_Communication_AgentIsConnected && g_nodeConfigSettings.sync_timeclock_with_agent)
         rmw_uros_sync_session(100);
 }
-
+#if 0
 void Ros_Communication_PublishActionFeedback(rcl_timer_t* timer, int64_t last_call_time)
 {
     Ros_ActionServer_FJT_ProcessFeedback();
@@ -278,7 +278,7 @@ static void Ros_Communication_MonitorUserLanState(rcl_timer_t* timer, int64_t la
     //remember
     bLinkWasUp = bLinkIsUp;
 }
-
+#endif
 void Ros_Communication_RunIoExecutor(rclc_executor_t* executor, SEM_ID semIoExecutorStatus)
 {
     mpSemTake(semIoExecutorStatus, NO_WAIT);
@@ -312,7 +312,7 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
     //Create timers
     rc = rclc_timer_init_default(&timerPingAgent, &g_microRosNodeInfo.support, RCL_MS_TO_NS(PERIOD_COMMUNICATION_PING_AGENT_MS), Ros_Communication_PingAgentConnection);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_TIMER_INIT_PING, "Failed creating rclc timer (%d)", (int)rc);
-
+#if 0
     rc = rclc_timer_init_default(&timerPublishActionFeedback, &g_microRosNodeInfo.support, RCL_MS_TO_NS(g_nodeConfigSettings.action_feedback_publisher_period), Ros_Communication_PublishActionFeedback);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_TIMER_INIT_ACTION_FB, "Failed creating rclc timer (%d)", (int)rc);
 
@@ -321,7 +321,7 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
         Ros_Communication_MonitorUserLanState);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_TIMER_INIT_USERLAN_MONITOR,
         "Failed creating rclc timer (%d)", (int)rc);
-
+#endif
     //---------------------------------
     //Create executors
     rclc_executor_t executor_motion_control;
@@ -343,7 +343,7 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
     //
     rc = rclc_executor_add_timer(&executor_motion_control, &timerPingAgent);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_TIMER_ADD_PING, "Failed adding timer (%d)", (int)rc);
-
+#if 0
     rc = rclc_executor_add_timer(&executor_motion_control, &timerPublishActionFeedback);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_TIMER_ADD_ACTION_FB, "Failed adding timer (%d)", (int)rc);
 
@@ -367,12 +367,12 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
         &executor_motion_control, &g_serviceStopTrajMode, &g_messages_StopTrajMode.request,
         &g_messages_StopTrajMode.response, Ros_ServiceStopTrajMode_Trigger);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_ADD_SERVICE_STOP_TRAJ, "Failed adding service (%d)", (int)rc);
-
+#endif
     rc = rclc_executor_add_service(
         &executor_motion_control, &g_serviceResetError, &g_messages_ResetError.request,
         &g_messages_ResetError.response, Ros_ServiceResetError_Trigger);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_ADD_SERVICE_RESET_ERROR, "Failed adding service (%d)", (int)rc);
-
+#if 0
     rc = rclc_executor_add_service(
         &executor_motion_control, &g_serviceStartTrajMode, &g_messages_StartTrajMode.request,
         &g_messages_StartTrajMode.response, Ros_ServiceStartTrajMode_Trigger);
@@ -428,7 +428,7 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
         &executor_io_control, &g_serviceWriteMRegister, &g_messages_ReadWriteIO.req_mreg_write,
         &g_messages_ReadWriteIO.resp_mreg_write, Ros_ServiceWriteMRegister_Trigger);
     motoRosAssert_withMsg(rc == RCL_RET_OK, SUBCODE_FAIL_ADD_SERVICE_WRITE_M_REG, "Failed adding service (%d)", (int)rc);
-
+#endif
     //===========================================================
 
     // Optional prepare for avoiding allocations during spin
@@ -438,7 +438,7 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
     //===========================================================
     //===========================================================
     //===========================================================
-
+#if 0
     // See if we should enable the timer which monitors user lan port link state
     if (!g_nodeConfigSettings.userlan_monitor_enabled)
     {
@@ -451,7 +451,7 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
         Ros_Debug_BroadcastMsg("Starting UserLan link state monitor (port: %d)",
             g_nodeConfigSettings.userlan_monitor_port);
     }
-
+#endif
     // Start executor that runs the I/O executor
     // (This task deletes itself when the agent disconnects.)
     SEM_ID semIoExecutorStatus = mpSemBCreate(SEM_Q_FIFO, SEM_FULL);
@@ -503,7 +503,7 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
 
     Ros_Debug_BroadcastMsg("Cleanup I/O control executor");
     rclc_executor_fini(&executor_io_control);
-
+#if 0
     Ros_Debug_BroadcastMsg("Cleanup timer for UserLan link state monitor");
     rc = rcl_timer_fini(&timerMonitorUserLanState);
     if (rc != RCL_RET_OK)
@@ -513,6 +513,7 @@ void Ros_Communication_StartExecutors(SEM_ID semCommunicationExecutorStatus)
     rc = rcl_timer_fini(&timerPublishActionFeedback);
     if (rc != RCL_RET_OK)
         Ros_Debug_BroadcastMsg("Failed cleaning up action feedback timer: %d", rc);
+#endif
 
     Ros_Debug_BroadcastMsg("Cleanup timer for ping");
     rc = rcl_timer_fini(&timerPingAgent);
